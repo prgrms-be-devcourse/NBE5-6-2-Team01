@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class BaseEntity {
     
     protected Boolean activated = true;
+    protected LocalDateTime deletedAt;
     
     @CreatedDate
     protected LocalDateTime createdAt = LocalDateTime.now();
@@ -20,5 +21,6 @@ public class BaseEntity {
     
     public void unActivated(){
         this.activated = false;
+        this.deletedAt = LocalDateTime.now();
     }
 }
