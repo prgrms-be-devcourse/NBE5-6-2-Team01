@@ -1,30 +1,28 @@
 package com.grepp.synapse4.app.model.llm.entity;
 
 import com.grepp.synapse4.app.model.restaurant.entity.Restaurant;
-import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.infra.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @ToString
-public class LLMResult extends BaseEntity {
+public class CurationResult extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "llm_result_id")
+    @Column(name = "curation_result_id")
     private Long id;
-    private String reason;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "llm_question_id")
-    private LLMQuestion lLMQuestion;
+    @JoinColumn(name="curation_id")
+    private Curation curation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+
 }
