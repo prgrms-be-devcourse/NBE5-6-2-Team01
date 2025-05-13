@@ -1,5 +1,7 @@
 package com.grepp.synapse4.app.controller.web.admin;
 
+import com.grepp.synapse4.app.model.meeting.MeetingService;
+import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.user.UserService;
 import com.grepp.synapse4.app.model.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final MeetingService meetingService;
 
     @GetMapping("users")
     public String users(Model model) {
@@ -26,6 +29,14 @@ public class AdminController {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
         return "admin/users";
+    }
+
+    @GetMapping("meetings")
+    public String meetings(Model model) {
+        log.info("meetings");
+        List<Meeting> meetings = meetingService.findAll();
+        model.addAttribute("meetings", meetings);
+        return "admin/meetings";
     }
 
 
