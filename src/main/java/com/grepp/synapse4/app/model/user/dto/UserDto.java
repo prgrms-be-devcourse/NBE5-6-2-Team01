@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Getter @Setter @ToString
 
-public class UserDtoKCW {
+public class UserDto {
 
     private Long userId;
     private String userAccount;
