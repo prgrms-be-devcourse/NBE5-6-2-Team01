@@ -1,9 +1,10 @@
 package com.grepp.synapse4.app.model.meeting.repository;
 
-import com.grepp.synapse4.app.model.meeting.entity.Meeting;
+import com.grepp.synapse4.app.model.meeting.entity.MeetingMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MeetingRepository extends JpaRepository<Meeting, Long> {
+public interface MeetingMemberRepository extends JpaRepository<MeetingMember, Long> {
+
 }
