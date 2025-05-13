@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>모임 초대</title>
+    <link rel="stylesheet" th:href="@{/css/meeting/alarm/alarm.css}" />
+</head>
+<body>
+<div class="modal-header">
+    <h1>모임 알림</h1>
+</div>
+<div class="modal">
+    <ul class="notification-list">
+<!--        <div class="empty" th:if="${#lists.isEmpty(inviteList)}">-->
+<!--            초대받은 모임이 없습니다.-->
+<!--        </div>-->
+        <li class="notification-item">
+            <div class="message">
+                <div><strong>"안철희"</strong> 님이 'Synapse1' 모임에 회원님을 초대하였습니다.</div>
+                <div class="buttons">
+                    <button class="button reject">거절</button>
+                    <button class="button accept">수락</button>
+                </div>
+            </div>
+        </li>
+
+        <li class="notification-item">
+            <div class="message">
+                "안철희" 님이 '야근정치게임' 모임에 회원님을 초대하였습니다.
+            </div>
+            <div class="buttons">
+                <button class="button reject">거절</button>
+                <button class="button accept">수락</button>
+            </div>
+        </li>
+
+        <li th:each="invite:${inviteList}" class="notification-item">
+            <div class="message">
+                "안철희" 님이 '야근정치게임' 모임에 회원님을 초대하였습니다.
+            </div>
+            <div class="buttons">
+                <button class="button reject">거절</button>
+                <button class="button accept">수락</button>
+            </div>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
