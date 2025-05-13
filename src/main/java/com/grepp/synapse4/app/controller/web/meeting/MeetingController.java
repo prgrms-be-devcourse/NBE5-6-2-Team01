@@ -39,6 +39,11 @@ public class MeetingController {
     return "redirect:/meetings";
   }
 
+  @GetMapping("detail")
+  public String detail(Model model){
+    return "meetings/meetingDetail";
+  }
+
   @GetMapping("/alarm/invite.html")
   public String invitePopup() {
     return "meetings/alarm/invite";  // templates/meetings/alarm/invite.html

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>모임 상세</title>
+    <link rel="stylesheet" th:href="@{/css/meeting/detail.css}" />
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="header">
+        <div>
+            <div class="div-flex" style="gap: 2vw;">
+                <div style="font-size: 40px; font-weight: bold">Synapse4</div>
+                <div>안세희 | 멤버 4명</div>
+            </div>
+            <p>2차 프로젝트 1팀의 밥 모임입니다.<br/>다 먹고 살기 위해 하는 것! 맛있는 거 먹고 시작합시다!!!</p>
+        </div>
+        <div class="div-flex" style="gap: 2vw;">
+            <button class="meeting-button">멤버 보기</button>
+            <button class="meeting-button">모임 탈퇴</button>
+        </div>
+    </div>
+
+    <!-- 투표 리스트 -->
+    <div class="header" style="margin-top: 5vh;">
+        <div style="font-size: 30px; font-weight: bold">투표 리스트</div>
+        <button class="vote-button">투표 만들기</button>
+    </div>
+
+    <div class="scroll-container">
+        <div class="vote">
+            <div>
+                <p class="vote-detail">5월 둘째주 맛집 탐방</p>
+                <p>둘째주 맛집 탐방 활동을 위한 투표입니다.</p>
+                <p>투표 마감: 5월 12일 6시까지</p>
+            </div>
+            <button class="vote-button">투표하기</button>
+        </div>
+        <div class="vote">
+            <div>
+                <p class="vote-detail">5월 둘째주 맛집 탐방</p>
+                <p>둘째주 맛집 탐방 활동을 위한 투표입니다.</p>
+                <p>투표 마감: 5월 12일 6시까지</p>
+            </div>
+            <button class="vote-button">투표하기</button>
+        </div>
+        <div class="vote">
+            <div>
+                <p class="vote-detail">5월 둘째주 맛집 탐방</p>
+                <p>둘째주 맛집 탐방 활동을 위한 투표입니다.</p>
+                <p>투표 마감: 5월 12일 6시까지</p>
+            </div>
+            <button class="vote-button">투표하기</button>
+        </div>
+        <div class="vote">
+            <div>
+                <p class="vote-detail">5월 둘째주 맛집 탐방</p>
+                <p>둘째주 맛집 탐방 활동을 위한 투표입니다.</p>
+                <p>투표 마감: 5월 12일 6시까지</p>
+            </div>
+            <button class="vote-button">투표하기</button>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
