@@ -12,7 +12,7 @@ public class BookMarkDtoKCW {
 
     private Long userId;
     private Long bookMarkId;
-//    private Long restaurantId;
+    private Long restaurantId;
     private LocalDateTime createdAt;
 
 
