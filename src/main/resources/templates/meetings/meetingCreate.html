@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>모임 생성</title>
+    <link rel="stylesheet" th:href="@{/css/meeting/create.css}" />
+</head>
+<body>
+<main layout:fragment="content">
+    <h3 style="font-weight: bold;">모임 생성</h3>
+    <div class="container">
+    <form th:action="@{/meetings/create}" th:object="${meetingCreateRequest}" method="post">
+        <div class="input-group">
+            <span>모임 이름</span>
+            <div class="meeting-name">
+                <input type="text" placeholder="모임명을 입력해 주세요" />
+                <button type="submit" class="complete">모임 생성</button>
+            </div>
+        </div>
+        <div class="input-group">
+            <span for="description">모임 설명</span>
+            <input type="text" id="description" placeholder="모임 설명을 입력해 주세요." />
+        </div>
+
+        <div class="input-group">
+            <span for="topic">모임 목적</span>
+            <input type="text" id="topic" placeholder="모임 주제를 선택해 주세요." />
+        </div>
+
+        <div>
+            <span>더치페이 여부</span>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="dutch" value="yes" checked style="margin-right: 8px; width: 16px; height: 16px;" />
+                    <span>네, 더치페이 예정이에요!</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="dutch" value="no" style="margin-right: 8px; width: 16px; height: 16px;" />
+                    <span>아니요, 더치페이가 없어요!</span>
+                </label>
+            </div>
+        </div>
+    </form>
+    </div>
+</main>
+
+</body>
+</html>
