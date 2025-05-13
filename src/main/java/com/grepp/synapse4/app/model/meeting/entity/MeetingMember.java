@@ -6,10 +6,14 @@ import com.grepp.synapse4.infra.entity.BaseEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @DynamicInsert
+@Getter @Setter @ToString
 public class MeetingMember extends BaseEntity {
     @Id
     @GeneratedValue
@@ -18,6 +22,8 @@ public class MeetingMember extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private State state;
+
+    private LocalDateTime deletedAt;
 
     @ManyToOne
     @JoinColumn(name = "meeting_id")

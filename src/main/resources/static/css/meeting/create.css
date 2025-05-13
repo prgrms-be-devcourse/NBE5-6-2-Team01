@@ -49,3 +49,8 @@ label {
   gap: 2vw;
   margin-top: 10px;
 }
+
+select {
+  display: block;
+  visibility: visible;
+}
