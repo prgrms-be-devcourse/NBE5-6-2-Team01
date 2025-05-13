@@ -1,13 +1,21 @@
 package com.grepp.synapse4.app.controller.web.meeting;
 
+import com.grepp.synapse4.app.controller.web.meeting.payload.MeetingRegistRequest;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
+import com.grepp.synapse4.app.model.meeting.code.Purpose;
+import com.grepp.synapse4.app.model.meeting.dto.MeetingDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
+import com.grepp.synapse4.app.model.user.entity.User;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,13 +36,32 @@ public class MeetingController {
     return "meetings/meetings";
   }
 
-  @GetMapping("create")
-  public String create(Model model){
-    return "meetings/meetingCreate";
+  @GetMapping("regist")
+  public String regist(Model model) {
+    model.addAttribute("meetingCreateRequest", new MeetingRegistRequest());
+    model.addAttribute("purpose", Purpose.values());
+    return "meetings/meetingRegist";
   }
 
-  @PostMapping("create")
-  public String create(){
+  @PostMapping("regist")
+  public String regist(
+      @Valid MeetingRegistRequest form,
+      BindingResult bindingResult,
+      Model model
+  ){
+    if(bindingResult.hasErrors()){
+      log.info("error: {}", bindingResult.hasErrors());
+      model.addAttribute("purpose", Purpose.values());
+      return "meetings";
+    }
+
+//    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//    User user = (User) auth.getPrincipal();
+//    Long userId = user.getId();
+
+    MeetingDto dto = form.toDto(1L);
+    log.info("dto: {}",dto);
+    meetingService.registMeeting(dto);
 
     return "redirect:/meetings";
   }
