@@ -43,7 +43,7 @@ public class MeetingService {
   }
 
   @Transactional
-  public List<Meeting> findMeetingsById(Long userId){
+  public List<Meeting> findMeetingsByUserId(Long userId){
     List<MeetingMember> meetingMemberList =  meetingMemberRepository.findAllByUserIdAndDeletedAtIsNull(userId);
     log.info("meetingMemberList: {}", meetingMemberList);
 
