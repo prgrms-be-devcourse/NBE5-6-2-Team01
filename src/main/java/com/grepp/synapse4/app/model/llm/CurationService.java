@@ -5,6 +5,7 @@ import com.grepp.synapse4.app.model.llm.dto.CurationDto;
 import com.grepp.synapse4.app.model.llm.entity.Curation;
 import com.grepp.synapse4.app.model.llm.repository.CurationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 
@@ -17,6 +18,7 @@ public class CurationService {
         this.curationRepository = curationRepository;
     }
 
+    @Transactional
     public void setCuration(CurationDto dto) {
         Curation curation = new Curation();
         curation.setTitle(dto.getTitle());
