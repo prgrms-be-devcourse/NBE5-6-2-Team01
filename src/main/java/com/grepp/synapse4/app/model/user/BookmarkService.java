@@ -1,6 +1,6 @@
 package com.grepp.synapse4.app.model.user;
 
-import com.grepp.synapse4.app.model.user.dto.BookMarkDto;
+
 import com.grepp.synapse4.app.model.user.entity.Bookmark;
 import com.grepp.synapse4.app.model.user.repository.BookMarkRepository;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,10 @@ public class BookmarkService {
     public List<Bookmark> findByUserId(Long userId) {
         return bookMarkRepository.findByUserId(userId);
     }
+
+
+
+
 
 
 }

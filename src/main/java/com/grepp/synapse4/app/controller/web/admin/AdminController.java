@@ -1,14 +1,21 @@
 package com.grepp.synapse4.app.controller.web.admin;
 
+import com.grepp.synapse4.app.model.llm.code.*;
+import com.grepp.synapse4.app.model.llm.dto.CurationDto;
+import com.grepp.synapse4.app.model.llm.entity.Curation;
+import com.grepp.synapse4.app.model.llm.repository.CurationRepository;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.user.UserService;
 import com.grepp.synapse4.app.model.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -22,6 +29,8 @@ public class AdminController {
 
     private final UserService userService;
     private final MeetingService meetingService;
+    @Autowired
+    private final CurationRepository curationRepository;
 
     @GetMapping("users")
     public String users(Model model) {
@@ -39,8 +48,45 @@ public class AdminController {
         return "admin/meetings";
     }
 
+    @GetMapping("curation/register")
+    public String curationRegister(Model model) {
 
+        model.addAttribute("form", new CurationDto());
+        model.addAttribute("companylocation", CompanyLocation.values());
+        model.addAttribute("purpose", Purpose.values());
+        model.addAttribute("compainons", Companion.values());
+        model.addAttribute("favoritecategory", FavoriteCategory.values());
+        model.addAttribute("preferredmood", PreferredMood.values());
 
+        return "admin/curationRegister";
+    }
 
+    @PostMapping("curation/register")
+    public String curationRegister(@ModelAttribute CurationDto curationDto, Model model) {
 
+        Curation curation = new Curation();
+        curation.setTitle(curationDto.getTitle());
+        curation.setCompanyLocation(String.valueOf(curationDto.getCompanyLocation()));
+        curation.setCompanion(String.valueOf(curationDto.getCompanion()));
+        curation.setPurpose(String.valueOf(curationDto.getPurpose()));
+        curation.setFavoriteCategory(String.valueOf(curationDto.getFavoriteCategory()));
+        curation.setPreferredMood(String.valueOf(curationDto.getPreferredMood()));
+        curationRepository.save(curation);
+        return "redirect:/admin/curationRegister";
+    }
+
+    @GetMapping("curation/list")
+    public String curationList(Model model) {
+        return "admin/curationList";
+    }
+
+    @GetMapping("signup")
+    public String signup(Model model) {
+        return "admin/signup";
+    }
+
+    @GetMapping("signin")
+    public String signin(Model model) {
+        return "admin/signin";
+    }
 }
