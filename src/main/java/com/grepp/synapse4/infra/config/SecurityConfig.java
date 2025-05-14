@@ -17,7 +17,7 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/img/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/img/**", "/css/**").permitAll()
                 .requestMatchers("/", "/user/**").permitAll()
                 .requestMatchers("/mypage/**").authenticated()
                 .anyRequest().authenticated()
