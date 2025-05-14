@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @GetMapping("/signin")
     public String signInForm() {
