@@ -11,14 +11,17 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
-@Getter @Setter @ToString
+@DynamicInsert
+@Getter @Setter
 public class Meeting extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "meeting_id")
     private Long id;
+    @Column(nullable = false)
     private String title;
     private String description;
     @Enumerated(EnumType.STRING)
@@ -31,4 +34,17 @@ public class Meeting extends BaseEntity {
 
     @OneToMany(mappedBy = "meeting")
     private List<Vote> votes = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Meeting{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", description='" + description + '\'' +
+            ", purpose=" + purpose +
+            ", isDutch=" + isDutch +
+            ", creatorId=" + creatorId +
+            ", createdAt=" + createdAt +
+            '}';
+    }
 }

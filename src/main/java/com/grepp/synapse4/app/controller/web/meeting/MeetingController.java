@@ -30,7 +30,7 @@ public class MeetingController {
 
   @GetMapping
   public String meeting(Model model){
-    List<Meeting> meetingList = new ArrayList<>();
+    List<Meeting> meetingList = meetingService.findMeetingsById(1L);
     model.addAttribute("meetingList", meetingList);
 
     return "meetings/meetings";
@@ -38,7 +38,7 @@ public class MeetingController {
 
   @GetMapping("regist")
   public String regist(Model model) {
-    model.addAttribute("meetingCreateRequest", new MeetingRegistRequest());
+    model.addAttribute("meetingRegistRequest", new MeetingRegistRequest());
     model.addAttribute("purpose", Purpose.values());
     return "meetings/meetingRegist";
   }
@@ -66,7 +66,7 @@ public class MeetingController {
     return "redirect:/meetings";
   }
 
-  @GetMapping("detail")
+  @GetMapping("{id}")
   public String detail(Model model){
     return "meetings/meetingDetail";
   }

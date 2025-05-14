@@ -23,70 +23,35 @@
             <a href="/meetings/regist" class="create">모임 생성하기</a>
         </div>
 
-<!--        <div class="empty" th:if="${#lists.isEmpty(meetingList)}">-->
-<!--            참여 중인 모임이 없습니다.<br/>-->
-<!--            모임을 만들어서 식사 메뉴를 손쉽게 선정해 보세요!-->
-<!--        </div>-->
+        <div class="empty" th:if="${#lists.isEmpty(meetingList)}">
+            참여 중인 모임이 없습니다.<br/>
+            모임을 만들어서 식사 메뉴를 손쉽게 선정해 보세요!
+        </div>
 
         <div class="scroll-container">
-            <div class="group-card">
+            <div th:each="meeting:${meetingList}" class="group-card">
                 <div class="group-info">
-                    <div class="group-image"></div>
                     <div>
-                        <div><strong>모임 1</strong></div>
-                        <div>모임장: 안세희</div>
-                        <div>모임일: ~~~~~~~~</div>
-                        <div>생성일자 or 참여 일자: 2025년 05월 08일</div>
+                        <div th:text="${meeting.title}" style="font-size: 1.5vw; font-weight: bold"></div>
+                        <div th:text="${meeting.description}" style="font-weight: bold"></div>
+                        <div>모임장: <span th:text="${meeting.creatorId}"></span></div>
+                        <div th:switch="${meeting.purpose.name()}">
+                            모임 유형:
+                            <span th:case="'LUNCH'">점심</span>
+                            <span th:case="'DINING_TOGETHER'">회식</span>
+                            <span th:case="'STUDY'">스터디</span>
+                        </div>
+                        <div>더치페이 여부:
+                            <span th:if="${meeting.isDutch}" th:text="Y"></span>
+                            <span th:unless="${meeting.isDutch}" th:text="N"></span>
+                        </div>
+                        <div>
+                            생성일자: <span th:text="${#temporals.format(meeting.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+                        </div>
                     </div>
                 </div>
-                <a href="" class="move">이동</a>
+                <a th:href="@{'/meetings/'+${meeting.id}}" class="move">이동</a>
             </div>
-            <div class="group-card">
-                <div class="group-info">
-                    <div class="group-image"></div>
-                    <div>
-                        <div><strong>모임 1</strong></div>
-                        <div>모임장: 안세희</div>
-                        <div>모임일: ~~~~~~~~</div>
-                        <div>생성일자 or 참여 일자: 2025년 05월 08일</div>
-                    </div>
-                </div>
-            </div>
-            <div class="group-card">
-                <div class="group-info">
-                    <div class="group-image"></div>
-                    <div>
-                        <div><strong>모임 1</strong></div>
-                        <div>모임장: 안세희</div>
-                        <div>모임일: ~~~~~~~~</div>
-                        <div>생성일자 or 참여 일자: 2025년 05월 08일</div>
-                    </div>
-                </div>
-            </div>
-            <div class="group-card">
-                <div class="group-info">
-                    <div class="group-image"></div>
-                    <div>
-                        <div><strong>모임 1</strong></div>
-                        <div>모임장: 안세희</div>
-                        <div>모임일: ~~~~~~~~</div>
-                        <div>생성일자 or 참여 일자: 2025년 05월 08일</div>
-                    </div>
-                </div>
-            </div>
-
-<!--            <div th:each="meeting:${meetingList}" class="group-card">-->
-<!--                <div class="group-info">-->
-<!--                    <div class="group-image"></div>-->
-<!--                    <div>-->
-<!--                        <div><strong th:text="${meeting.name}">모임 이름</strong></div>-->
-<!--                        <div>모임장: <span th:text="${meeting.leaderName}">모임장 이름</span></div>-->
-<!--                        <div>모임일: <span th:text="${meeting.date}">모임일</span></div>-->
-<!--                        <div>생성일자 or 참여 일자: <span th:text="${meeting.createdAt}">참여일자</span></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <a href="" class="move">이동</a>-->
-<!--            </div>-->
         </div>
     </div>
 
