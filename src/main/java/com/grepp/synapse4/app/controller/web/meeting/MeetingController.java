@@ -5,18 +5,15 @@ import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.code.Purpose;
 import com.grepp.synapse4.app.model.meeting.dto.MeetingDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
-import com.grepp.synapse4.app.model.user.entity.User;
 import jakarta.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -30,7 +27,7 @@ public class MeetingController {
 
   @GetMapping
   public String meeting(Model model){
-    List<Meeting> meetingList = meetingService.findMeetingsById(1L);
+    List<Meeting> meetingList = meetingService.findMeetingsByUserId(1L);
     model.addAttribute("meetingList", meetingList);
 
     return "meetings/meetings";
@@ -40,7 +37,7 @@ public class MeetingController {
   public String regist(Model model) {
     model.addAttribute("meetingRegistRequest", new MeetingRegistRequest());
     model.addAttribute("purpose", Purpose.values());
-    return "meetings/meetingRegist";
+    return "meetings/meeting-regist";
   }
 
   @PostMapping("regist")
@@ -51,7 +48,7 @@ public class MeetingController {
   ){
     if(bindingResult.hasErrors()){
       model.addAttribute("purpose", Purpose.values());
-      return "meetings/meetingRegist";
+      return "meetings/meeting-regist";
     }
 
 //    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -66,18 +63,29 @@ public class MeetingController {
   }
 
   @GetMapping("{id}")
-  public String detail(Model model){
-    return "meetings/meetingDetail";
+  public String detail(
+      @PathVariable Long id,
+      Model model
+  ){
+    Meeting meeting = meetingService.findMeetingsById(id);
+    model.addAttribute(meeting);
+
+    return "meetings/meeting-detail";
   }
 
-  @GetMapping("/alarm/invite.html")
+  @GetMapping("/modal/invite.html")
   public String invitePopup() {
-    return "meetings/alarm/invite";  // templates/meetings/alarm/invite.html
+    return "meetings/modal/invite";
   }
 
-  @GetMapping("/alarm/vote.html")
+  @GetMapping("/modal/vote.html")
   public String votePopup() {
-    return "meetings/alarm/vote";  // templates/meetings/alarm/vote.html
+    return "meetings/modal/vote";
+  }
+
+  @GetMapping("/modal/meeting-member-list.html")
+  public String mmetingMemberListPopup() {
+    return "meetings/modal/meeting-member-list";
   }
 
 }
