@@ -1,5 +1,6 @@
 package com.grepp.synapse4.app.controller.web.admin;
 
+import com.grepp.synapse4.app.model.llm.CurationService;
 import com.grepp.synapse4.app.model.llm.code.*;
 import com.grepp.synapse4.app.model.llm.dto.CurationDto;
 import com.grepp.synapse4.app.model.llm.entity.Curation;
@@ -29,8 +30,7 @@ public class AdminController {
 
     private final UserService userService;
     private final MeetingService meetingService;
-    @Autowired
-    private final CurationRepository curationRepository;
+    private final CurationService curationService;
 
     @GetMapping("users")
     public String users(Model model) {
@@ -62,16 +62,9 @@ public class AdminController {
     }
 
     @PostMapping("curation/register")
-    public String curationRegister(@ModelAttribute CurationDto curationDto, Model model) {
+    public String curationRegister(@ModelAttribute("form") CurationDto curationDto) {
 
-        Curation curation = new Curation();
-        curation.setTitle(curationDto.getTitle());
-        curation.setCompanyLocation(String.valueOf(curationDto.getCompanyLocation()));
-        curation.setCompanion(String.valueOf(curationDto.getCompanion()));
-        curation.setPurpose(String.valueOf(curationDto.getPurpose()));
-        curation.setFavoriteCategory(String.valueOf(curationDto.getFavoriteCategory()));
-        curation.setPreferredMood(String.valueOf(curationDto.getPreferredMood()));
-        curationRepository.save(curation);
+        curationService.setCuration(curationDto);
         return "redirect:/admin/curationRegister";
     }
 
@@ -89,4 +82,5 @@ public class AdminController {
     public String signin(Model model) {
         return "admin/signin";
     }
+
 }
