@@ -17,7 +17,7 @@ public class MeetingRegistRequest {
   @NotNull(message = "목적을 필수로 입력해야 합니다.")
   private Purpose purpose;
 
-  private Boolean isDutch;
+  private Boolean isDutch = false;
 
   public MeetingDto toDto(Long userId){
     MeetingDto meetingDto = new MeetingDto();

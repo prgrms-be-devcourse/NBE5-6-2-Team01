@@ -13,9 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
@@ -62,13 +62,13 @@ public class MeetingController {
     return "redirect:/meetings";
   }
 
-  @GetMapping("{id}")
+  @GetMapping("detail")
   public String detail(
-      @PathVariable Long id,
+      @RequestParam Long id,
       Model model
   ){
     Meeting meeting = meetingService.findMeetingsById(id);
-    model.addAttribute(meeting);
+    model.addAttribute("meeting", meeting);
 
     return "meetings/meeting-detail";
   }
@@ -84,7 +84,16 @@ public class MeetingController {
   }
 
   @GetMapping("/modal/meeting-member-list.html")
-  public String mmetingMemberListPopup() {
+  public String meetingMemberListPopup(
+      @RequestParam Long id,
+      Model model
+  ) {
+    Meeting meeting = meetingService.findMeetingsById(id);
+    model.addAttribute("meeting", meeting);
+
+    List<User> userList = meetingService.findMemberListById(id);
+    model.addAttribute("userList", userList);
+
     return "meetings/modal/meeting-member-list";
   }
 
