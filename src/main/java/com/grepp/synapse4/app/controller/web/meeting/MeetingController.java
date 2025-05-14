@@ -50,9 +50,8 @@ public class MeetingController {
       Model model
   ){
     if(bindingResult.hasErrors()){
-      log.info("error: {}", bindingResult.hasErrors());
       model.addAttribute("purpose", Purpose.values());
-      return "meetings";
+      return "meetings/meetingRegist";
     }
 
 //    Authentication auth = SecurityContextHolder.getContext().getAuthentication();

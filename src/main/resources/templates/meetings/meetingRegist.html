@@ -11,11 +11,14 @@
 <main layout:fragment="content">
     <h3 style="font-weight: bold;">모임 생성</h3>
     <div class="container">
-    <form th:action="@{/meetings/regist}" th:object="${meetingCreateRequest}" method="post">
+    <form th:action="@{/meetings/regist}" th:object="${meetingRegistRequest}" method="post">
         <div class="input-group">
             <span>모임 이름</span>
             <div class="meeting-name">
-                <input type="text" th:field="*{title}" placeholder="모임명을 입력해 주세요" />
+                <div style="width: 100%">
+                    <input type="text" th:field="*{title}" placeholder="모임명을 입력해 주세요" />
+                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></div>
+                </div>
                 <button type="submit" class="complete">모임 생성</button>
             </div>
         </div>
@@ -27,8 +30,9 @@
             <span>모임 목적</span>
             <select th:field="*{purpose}">
                 <option value="">모임 주제를 선택해 주세요.</option>
-                <option th:each="p:${purpose}" th:value="${p}" th:text="${p}"></option>
+                <option th:each="p : ${purpose}" th:value="${p}" th:text="${p}"></option>
             </select>
+            <div th:if="${#fields.hasErrors('purpose')}" th:errors="*{purpose}" class="error"></div>
         </div>
         <div>
             <span>더치페이 여부</span>
