@@ -13,7 +13,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @DynamicInsert
-@Getter @Setter @ToString
+@Getter @Setter
 public class MeetingMember extends BaseEntity {
     @Id
     @GeneratedValue
@@ -32,4 +32,15 @@ public class MeetingMember extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Override
+    public String toString() {
+        return "MeetingMember{" +
+            "id=" + id +
+            ", state=" + state +
+            ", deletedAt=" + deletedAt +
+            ", meetingId=" + (meeting != null ? meeting.getId() : "null") +
+            ", userId=" + (user != null ? user.getId() : "null") +
+            '}';
+    }
 }

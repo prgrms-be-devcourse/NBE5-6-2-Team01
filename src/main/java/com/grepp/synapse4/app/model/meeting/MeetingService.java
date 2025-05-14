@@ -8,6 +8,9 @@ import com.grepp.synapse4.app.model.meeting.repository.MeetingMemberRepository;
 import com.grepp.synapse4.app.model.meeting.repository.MeetingRepository;
 import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.app.model.user.repository.UserRepository;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -39,4 +42,14 @@ public class MeetingService {
     meetingMemberRepository.save(meetingMember);
   }
 
+  @Transactional
+  public List<Meeting> findMeetingsById(Long userId){
+    List<MeetingMember> meetingMemberList =  meetingMemberRepository.findAllByUserIdAndDeletedAtIsNull(userId);
+    log.info("meetingMemberList: {}", meetingMemberList);
+
+    return meetingMemberList.stream()
+        .map(MeetingMember::getMeeting)
+        .sorted(Comparator.comparing(Meeting::getCreatedAt).reversed())
+        .collect(Collectors.toList());
+  }
 }
