@@ -13,4 +13,6 @@ public interface MeetingMemberRepository extends JpaRepository<MeetingMember, Lo
   List<MeetingMember> findAllByMeetingIdAndStateAndDeletedAtIsNull(Long meeting_id, State state);
 
   Optional<MeetingMember> findByMeetingIdAndUserId(Long meetingId, Long userId);
+
+  Boolean existsAllByMeetingIdAndUserId(Long meetingId, Long userId);
 }

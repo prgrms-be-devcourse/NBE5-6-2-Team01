@@ -34,7 +34,7 @@
                     <div>
                         <div th:text="${meeting.title}" style="font-size: 1.5vw; font-weight: bold"></div>
                         <div th:text="${meeting.description}" style="font-weight: bold"></div>
-                        <div>모임장: <span th:text="${meeting.creatorId}"></span></div>
+                        <div>모임 생성자: <span th:text="${meeting.creatorId}"></span></div>
                         <div th:switch="${meeting.purpose.name()}">
                             모임 유형:
                             <span th:case="'LUNCH'">점심</span>

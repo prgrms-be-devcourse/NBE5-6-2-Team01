@@ -12,7 +12,6 @@ import com.grepp.synapse4.app.model.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,20 +69,7 @@ public class MeetingService {
   }
 
   public Boolean findMemberByMeetingIdAndUserId(Long meetingId, Long userId) {
-    // TODO: JPA에서 MeetingMember 엔티티에 외래키로 사용중인 meeting_id, user_id를
-    //        join을 하며 where를 meeting_id == user_id로 하는 문제 발생
-    //    return meetingMemberRepository.existsByMeeting_IdAndUser_Id(meetingId, userId);
-    List<MeetingMember> acceptedList = meetingMemberRepository.findAllByMeetingIdAndStateAndDeletedAtIsNull(meetingId, State.ACCEPT);
-    List<MeetingMember> waitedList = meetingMemberRepository.findAllByMeetingIdAndStateAndDeletedAtIsNull(meetingId, State.WAIT);
-
-    for(MeetingMember member:acceptedList){
-      if(Objects.equals(member.getUser().getId(), userId)) return false;
-    }
-    for(MeetingMember member:waitedList){
-      if(Objects.equals(member.getUser().getId(), userId)) return false;
-    }
-
-    return true;
+    return meetingMemberRepository.existsAllByMeetingIdAndUserId(meetingId, userId);
   }
 
   public List<MeetingMember> findInviteByUserId(Long userId) {
