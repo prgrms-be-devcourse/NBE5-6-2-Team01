@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MeetingMemberRepository extends JpaRepository<MeetingMember, Long> {
-  List<MeetingMember> findAllByUserIdAndDeletedAtIsNull(Long userId);
+  List<MeetingMember> findAllByUserIdAndStateAndDeletedAtIsNull(Long userId, State state);
   List<MeetingMember> findAllByMeetingIdAndStateAndDeletedAtIsNull(Long meeting_id, State state);
 }

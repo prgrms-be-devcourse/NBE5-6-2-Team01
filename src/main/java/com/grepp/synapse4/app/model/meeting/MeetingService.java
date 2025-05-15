@@ -2,6 +2,7 @@ package com.grepp.synapse4.app.model.meeting;
 
 import com.grepp.synapse4.app.model.meeting.code.State;
 import com.grepp.synapse4.app.model.meeting.dto.MeetingDto;
+import com.grepp.synapse4.app.model.meeting.dto.MeetingMemberDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.meeting.entity.MeetingMember;
 import com.grepp.synapse4.app.model.meeting.repository.MeetingMemberRepository;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 @Service
 @Slf4j
@@ -45,7 +47,7 @@ public class MeetingService {
 
   @Transactional
   public List<Meeting> findMeetingsByUserId(Long userId){
-    List<MeetingMember> meetingMemberList =  meetingMemberRepository.findAllByUserIdAndDeletedAtIsNull(userId);
+    List<MeetingMember> meetingMemberList =  meetingMemberRepository.findAllByUserIdAndStateAndDeletedAtIsNull(userId, State.ACCEPT);
     log.info("meetingMemberList: {}", meetingMemberList);
 
     return meetingMemberList.stream()
@@ -84,22 +86,21 @@ public class MeetingService {
     return true;
   }
 
-  public void inviteUser(Long id, Long userId) {
-    Meeting meeting = meetingRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("미팅을 찾지 못했습니다."));
-
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new RuntimeException("유저를 찾지 못했습니다."));
-
-    MeetingMember member = new MeetingMember();
-    member.setMeeting(meeting);
-    member.setUser(user);
-    member.setState(State.WAIT);
-    meetingMemberRepository.save(member);
+  public List<MeetingMember> findInviteByUserId(Long userId) {
+    return meetingMemberRepository.findAllByUserIdAndStateAndDeletedAtIsNull(userId, State.WAIT);
   }
 
-//  public void inviteUser(MeetingMemberDto dto) {
-//    MeetingMember meetingMember = mapper.map(dto, MeetingMember.class);
-//    meetingMemberRepository.save(meetingMember);
-//  }
+  public void setInviteModel(Model model, Long meetingId, String errorMessage) {
+    List<User> invitedList = this.findMemberListByMeetingId(meetingId, State.WAIT);
+    model.addAttribute("invitedList", invitedList);
+    model.addAttribute("meetingId", meetingId);
+    if (errorMessage != null) {
+      model.addAttribute("error", errorMessage);
+    }
+  }
+
+  public void inviteUser(MeetingMemberDto dto) {
+    MeetingMember meetingMember = mapper.map(dto, MeetingMember.class);
+    meetingMemberRepository.save(meetingMember);
+  }
 }

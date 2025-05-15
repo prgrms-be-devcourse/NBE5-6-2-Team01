@@ -1,11 +1,14 @@
 package com.grepp.synapse4.app.controller.web.meeting;
 
+import com.grepp.synapse4.app.controller.web.meeting.payload.MeetingInviteRequest;
 import com.grepp.synapse4.app.controller.web.meeting.payload.MeetingRegistRequest;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.code.Purpose;
 import com.grepp.synapse4.app.model.meeting.code.State;
 import com.grepp.synapse4.app.model.meeting.dto.MeetingDto;
+import com.grepp.synapse4.app.model.meeting.dto.MeetingMemberDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
+import com.grepp.synapse4.app.model.meeting.entity.MeetingMember;
 import com.grepp.synapse4.app.model.user.CustomUserDetailsService;
 import com.grepp.synapse4.app.model.user.entity.User;
 import jakarta.validation.Valid;
@@ -82,8 +85,19 @@ public class MeetingController {
   }
 
   @GetMapping("/modal/alarm-invite.html")
-  public String invitePopup() {
+  public String invitePopup(Model model) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+
+    List<MeetingMember> invitedList = meetingService.findInviteByUserId(userId);
+
     return "meetings/modal/alarm-invite";
+  }
+
+  @PostMapping("/modal/alarm-invite.html")
+  public String invitePopup(){
+
+    return "redirect:/meetings/meeting-detail";
   }
 
   @GetMapping("/modal/alarm-vote.html")
@@ -111,9 +125,7 @@ public class MeetingController {
       @RequestParam Long id,
       Model model
   ){
-    List<User> invitedList = meetingService.findMemberListByMeetingId(id, State.WAIT);
-    model.addAttribute("invitedList", invitedList);
-    model.addAttribute("meetingId", id);
+    meetingService.setInviteModel(model, id, null);
 
     return "meetings/modal/meeting-invite";
   }
@@ -121,34 +133,28 @@ public class MeetingController {
   @PostMapping("/modal/meeting-invite.html")
   @PreAuthorize("isAuthenticated()")
   public String meetingInvite(
-      // @Valid MeetingInviteRequest invite,
+      @Valid MeetingInviteRequest invite,
       @RequestParam Long id,
       @RequestParam String account,
       Model model
   ){
     Boolean existByUser = customUserDetailsService.findUserByAccount(account);
-    log.info("error user: {}", existByUser);
     if(!existByUser){
-      model.addAttribute("error", "존재하지 않는 유저입니다.");
-      model.addAttribute("meetingId", id);
+      meetingService.setInviteModel(model, id, "존재하지 않는 유저입니다.");
+
       return "meetings/modal/meeting-invite";
     }
 
     Long userId = customUserDetailsService.loadUserIdByAccount(account);
-    log.info("userId: {} {}", id, userId);
     Boolean existByMeetingMember = meetingService.findMemberByMeetingIdAndUserId(id, userId);
-    log.info("error meetingMember: {}", existByMeetingMember);
     if(!existByMeetingMember){
-      model.addAttribute("error", "이미 초대된 유저입니다.");
-      model.addAttribute("meetingId", id);
+      meetingService.setInviteModel(model, id, "이미 초대된 유저입니다.");
       return "meetings/modal/meeting-invite";
     }
 
-    // TODO: 어떤 로직이 더 좋은 것인지 모르겠음
-//    MeetingMemberDto dto = invite.toDto(id, userId);
-//    meetingService.inviteUser(dto);
-    meetingService.inviteUser(id, userId);
+    MeetingMemberDto dto = invite.toDto(id, userId);
+    meetingService.inviteUser(dto);
 
-    return "redirect:/meetings/modal/meeting-alarm-invite.html?id="+id;
+    return "redirect:/meetings/modal/meeting-invite.html?id="+id;
   }
 }
