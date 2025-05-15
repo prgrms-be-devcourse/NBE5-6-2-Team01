@@ -85,27 +85,46 @@ public class MeetingController {
   }
 
   @GetMapping("/modal/alarm-invite.html")
+  @PreAuthorize("isAuthenticated()")
   public String invitePopup(Model model) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
 
     List<MeetingMember> invitedList = meetingService.findInviteByUserId(userId);
+    model.addAttribute("invitedList", invitedList);
+    log.info("invitedList: {}", invitedList);
 
     return "meetings/modal/alarm-invite";
   }
 
   @PostMapping("/modal/alarm-invite.html")
-  public String invitePopup(){
+  @PreAuthorize("isAuthenticated()")
+  public String invitePopup(
+      @RequestParam Long id,
+      @RequestParam String state
+  ){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
 
-    return "redirect:/meetings/meeting-detail";
+    Boolean result = meetingService.updateInvitedState(id, userId, state);
+
+    return "redirect:/meetings/modal/alarm-invite.html";
   }
 
   @GetMapping("/modal/alarm-vote.html")
-  public String votePopup() {
+  @PreAuthorize("isAuthenticated()")
+  public String votePopup(Model model) {
     return "meetings/modal/alarm-vote";
   }
 
+  @PostMapping("/modal/alarm-vote.html")
+  @PreAuthorize("isAuthenticated()")
+  public String votePopup() {
+    return "redirect:/meetings/modal/alarm-vote";
+  }
+
   @GetMapping("/modal/meeting-member-list.html")
+  @PreAuthorize("isAuthenticated()")
   public String meetingMemberListPopup(
       @RequestParam Long id,
       Model model

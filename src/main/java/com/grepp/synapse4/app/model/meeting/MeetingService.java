@@ -9,6 +9,7 @@ import com.grepp.synapse4.app.model.meeting.repository.MeetingMemberRepository;
 import com.grepp.synapse4.app.model.meeting.repository.MeetingRepository;
 import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.app.model.user.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +24,7 @@ import org.springframework.ui.Model;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class MeetingService {
 
   private final MeetingRepository meetingRepository;
@@ -30,7 +32,6 @@ public class MeetingService {
   private final UserRepository userRepository;
   private final MeetingMemberRepository meetingMemberRepository;
 
-  @Transactional
   public void registMeeting(MeetingDto dto){
     Meeting meeting = mapper.map(dto, Meeting.class);
     meetingRepository.save(meeting);
@@ -45,7 +46,6 @@ public class MeetingService {
     meetingMemberRepository.save(meetingMember);
   }
 
-  @Transactional
   public List<Meeting> findMeetingsByUserId(Long userId){
     List<MeetingMember> meetingMemberList =  meetingMemberRepository.findAllByUserIdAndStateAndDeletedAtIsNull(userId, State.ACCEPT);
     log.info("meetingMemberList: {}", meetingMemberList);
@@ -102,5 +102,21 @@ public class MeetingService {
   public void inviteUser(MeetingMemberDto dto) {
     MeetingMember meetingMember = mapper.map(dto, MeetingMember.class);
     meetingMemberRepository.save(meetingMember);
+  }
+
+  public boolean updateInvitedState(Long meetingId, Long userId, String state) {
+    MeetingMember meetingMember = meetingMemberRepository.findByMeetingIdAndUserId(meetingId, userId)
+        .orElseThrow(() -> new EntityNotFoundException("데이터를 찾지 못했습니다"));
+
+    if (state.equals("REJECT")) {
+      meetingMemberRepository.delete(meetingMember);
+      return false;
+    } else if (state.equals("ACCEPT")) {
+      meetingMember.setState(State.ACCEPT);
+      meetingMemberRepository.save(meetingMember);
+      return true;
+    }
+
+    return false;
   }
 }
