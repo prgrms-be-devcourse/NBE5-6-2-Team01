@@ -3,12 +3,19 @@ package com.grepp.synapse4.app.controller.web.meeting;
 import com.grepp.synapse4.app.controller.web.meeting.payload.MeetingRegistRequest;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.code.Purpose;
+import com.grepp.synapse4.app.model.meeting.code.State;
 import com.grepp.synapse4.app.model.meeting.dto.MeetingDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
+import com.grepp.synapse4.app.model.user.CustomUserDetailsService;
+import com.grepp.synapse4.app.model.user.UserService;
+import com.grepp.synapse4.app.model.user.dto.CustomUserDetails;
+import com.grepp.synapse4.app.model.user.entity.User;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,10 +31,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MeetingController {
 
   private final MeetingService meetingService;
+  private final CustomUserDetailsService customUserDetailsService;
 
   @GetMapping
   public String meeting(Model model){
-    List<Meeting> meetingList = meetingService.findMeetingsByUserId(1L);
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+
+    List<Meeting> meetingList = meetingService.findMeetingsByUserId(userId);
     model.addAttribute("meetingList", meetingList);
 
     return "meetings/meetings";
@@ -51,12 +62,10 @@ public class MeetingController {
       return "meetings/meeting-regist";
     }
 
-//    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//    User user = (User) auth.getPrincipal();
-//    Long userId = user.getId();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
 
-    MeetingDto dto = form.toDto(1L);
-    log.info("dto: {}",dto);
+    MeetingDto dto = form.toDto(userId);
     meetingService.registMeeting(dto);
 
     return "redirect:/meetings";

@@ -22,4 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
+    public Long loadUserIdByAccount(String account) throws UsernameNotFoundException{
+        User user = userRepository.findByUserAccount(account)
+            .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        return user.getId();
+    }
 }
