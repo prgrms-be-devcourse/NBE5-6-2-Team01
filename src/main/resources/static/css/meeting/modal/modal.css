@@ -115,3 +115,36 @@ body{
   height: auto;
   cursor: pointer;
 }
+
+.invite-header{
+  font-size: 2vw;
+  font-weight: bold;
+}
+.invite-wrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2vw;
+  margin-top: 1.5vh;
+}
+.invite-input{
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #D9D9D9;
+  border-radius: 5px;
+}
+
+.empty{
+  width: 100%;
+  height: 37vh;
+  box-sizing: border-box;
+  font-size: large;
+  font-weight: bold;
+  text-align: center;
+  align-content: center;
+}
+.scroll-container {
+  max-height: 37vh;
+  overflow-y: auto;
+  /*scrollbar-width: none;*/
+}

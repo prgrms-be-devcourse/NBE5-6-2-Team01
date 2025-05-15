@@ -10,6 +10,7 @@ import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.app.model.user.repository.UserRepository;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,4 +53,53 @@ public class MeetingService {
         .sorted(Comparator.comparing(Meeting::getCreatedAt).reversed())
         .collect(Collectors.toList());
   }
+
+  public Meeting findMeetingsById(Long id) {
+    return meetingRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("모임을 찾지 못했습니다."));
+  }
+
+  public List<User> findMemberListByMeetingId(Long meetingId, State state) {
+    List<MeetingMember> memberList = meetingMemberRepository.findAllByMeetingIdAndStateAndDeletedAtIsNull(meetingId, state);
+
+    return memberList.stream()
+        .map(MeetingMember::getUser)
+        .collect(Collectors.toList());
+  }
+
+  public Boolean findMemberByMeetingIdAndUserId(Long meetingId, Long userId) {
+    // TODO: JPA에서 MeetingMember 엔티티에 외래키로 사용중인 meeting_id, user_id를
+    //        join을 하며 where를 meeting_id == user_id로 하는 문제 발생
+    //    return meetingMemberRepository.existsByMeeting_IdAndUser_Id(meetingId, userId);
+    List<MeetingMember> acceptedList = meetingMemberRepository.findAllByMeetingIdAndStateAndDeletedAtIsNull(meetingId, State.ACCEPT);
+    List<MeetingMember> waitedList = meetingMemberRepository.findAllByMeetingIdAndStateAndDeletedAtIsNull(meetingId, State.WAIT);
+
+    for(MeetingMember member:acceptedList){
+      if(Objects.equals(member.getUser().getId(), userId)) return false;
+    }
+    for(MeetingMember member:waitedList){
+      if(Objects.equals(member.getUser().getId(), userId)) return false;
+    }
+
+    return true;
+  }
+
+  public void inviteUser(Long id, Long userId) {
+    Meeting meeting = meetingRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("미팅을 찾지 못했습니다."));
+
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("유저를 찾지 못했습니다."));
+
+    MeetingMember member = new MeetingMember();
+    member.setMeeting(meeting);
+    member.setUser(user);
+    member.setState(State.WAIT);
+    meetingMemberRepository.save(member);
+  }
+
+//  public void inviteUser(MeetingMemberDto dto) {
+//    MeetingMember meetingMember = mapper.map(dto, MeetingMember.class);
+//    meetingMemberRepository.save(meetingMember);
+//  }
 }
