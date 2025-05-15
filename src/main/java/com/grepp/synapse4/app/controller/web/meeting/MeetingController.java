@@ -81,14 +81,14 @@ public class MeetingController {
     return "meetings/meeting-detail";
   }
 
-  @GetMapping("/modal/invite.html")
+  @GetMapping("/modal/alarm-invite.html")
   public String invitePopup() {
-    return "meetings/modal/invite";
+    return "meetings/modal/alarm-invite";
   }
 
-  @GetMapping("/modal/vote.html")
+  @GetMapping("/modal/alarm-vote.html")
   public String votePopup() {
-    return "meetings/modal/vote";
+    return "meetings/modal/alarm-vote";
   }
 
   @GetMapping("/modal/meeting-member-list.html")
@@ -149,6 +149,6 @@ public class MeetingController {
 //    meetingService.inviteUser(dto);
     meetingService.inviteUser(id, userId);
 
-    return "redirect:/meetings/modal/meeting-invite.html?id="+id;
+    return "redirect:/meetings/modal/meeting-alarm-invite.html?id="+id;
   }
 }
