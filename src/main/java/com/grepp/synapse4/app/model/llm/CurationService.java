@@ -1,22 +1,17 @@
 package com.grepp.synapse4.app.model.llm;
 
-import com.grepp.synapse4.app.model.llm.code.*;
 import com.grepp.synapse4.app.model.llm.dto.CurationDto;
 import com.grepp.synapse4.app.model.llm.entity.Curation;
 import com.grepp.synapse4.app.model.llm.repository.CurationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-
+@RequiredArgsConstructor
 public class CurationService {
 
     private final CurationRepository curationRepository;
-
-
-    public CurationService(CurationRepository curationRepository) {
-        this.curationRepository = curationRepository;
-    }
 
     @Transactional
     public void setCuration(CurationDto dto) {

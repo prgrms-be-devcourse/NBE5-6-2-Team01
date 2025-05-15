@@ -48,5 +48,4 @@ public class AdminApiController {
         return ResponseEntity.ok(ApiResponse.success(dtoList));
     }
 
-
 }

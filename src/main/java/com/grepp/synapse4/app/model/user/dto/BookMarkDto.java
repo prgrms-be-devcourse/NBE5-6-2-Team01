@@ -1,7 +1,6 @@
 package com.grepp.synapse4.app.model.user.dto;
 
 import com.grepp.synapse4.app.model.user.entity.Bookmark;
-import com.grepp.synapse4.app.model.user.entity.Survey;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
