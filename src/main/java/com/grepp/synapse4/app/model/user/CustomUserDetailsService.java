@@ -1,4 +1,4 @@
-package com.grepp.synapse4.app.model.user.service;
+package com.grepp.synapse4.app.model.user;
 
 import com.grepp.synapse4.app.model.user.dto.CustomUserDetails;
 import com.grepp.synapse4.app.model.user.entity.User;

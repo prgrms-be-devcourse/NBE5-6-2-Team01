@@ -1,4 +1,4 @@
-package com.grepp.synapse4.app.model.user.service;
+package com.grepp.synapse4.app.model.user;
 
 import static com.grepp.synapse4.app.model.auth.code.Role.ROLE_USER;
 

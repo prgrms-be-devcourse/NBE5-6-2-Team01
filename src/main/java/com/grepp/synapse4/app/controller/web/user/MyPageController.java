@@ -3,7 +3,7 @@ package com.grepp.synapse4.app.controller.web.user;
 import com.grepp.synapse4.app.model.user.dto.CustomUserDetails;
 import com.grepp.synapse4.app.model.user.dto.request.EditInfoRequest;
 import com.grepp.synapse4.app.model.user.entity.User;
-import com.grepp.synapse4.app.model.user.service.UserService;
+import com.grepp.synapse4.app.model.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
