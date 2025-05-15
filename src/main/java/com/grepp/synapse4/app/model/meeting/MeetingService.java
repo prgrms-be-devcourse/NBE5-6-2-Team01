@@ -60,6 +60,17 @@ public class MeetingService {
             .orElseThrow(() -> new RuntimeException("모임을 찾지 못했습니다."));
   }
 
+  public Integer countMemberByMeeting(Long id) {
+    return meetingMemberRepository.countByMeetingIdAndState(id, State.ACCEPT);
+  }
+
+  public void leaveMeeting(Long id, Long userId) {
+    MeetingMember member = meetingMemberRepository.findByMeetingIdAndUserId(id, userId)
+        .orElseThrow(() -> new RuntimeException("해당 멤버가 없습니다."));
+
+    meetingMemberRepository.delete(member);
+  }
+
   public List<User> findMemberListByMeetingId(Long meetingId, State state) {
     List<MeetingMember> memberList = meetingMemberRepository.findAllByMeetingIdAndStateAndDeletedAtIsNull(meetingId, state);
 
@@ -86,20 +97,20 @@ public class MeetingService {
   }
 
   public void inviteUser(MeetingMemberDto dto) {
-    MeetingMember meetingMember = mapper.map(dto, MeetingMember.class);
-    meetingMemberRepository.save(meetingMember);
+    MeetingMember member = mapper.map(dto, MeetingMember.class);
+    meetingMemberRepository.save(member);
   }
 
   public boolean updateInvitedState(Long meetingId, Long userId, String state) {
-    MeetingMember meetingMember = meetingMemberRepository.findByMeetingIdAndUserId(meetingId, userId)
+    MeetingMember member = meetingMemberRepository.findByMeetingIdAndUserId(meetingId, userId)
         .orElseThrow(() -> new EntityNotFoundException("데이터를 찾지 못했습니다"));
 
     if (state.equals("REJECT")) {
-      meetingMemberRepository.delete(meetingMember);
+      meetingMemberRepository.delete(member);
       return false;
     } else if (state.equals("ACCEPT")) {
-      meetingMember.setState(State.ACCEPT);
-      meetingMemberRepository.save(meetingMember);
+      member.setState(State.ACCEPT);
+      meetingMemberRepository.save(member);
       return true;
     }
 

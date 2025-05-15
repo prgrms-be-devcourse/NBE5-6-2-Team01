@@ -80,8 +80,22 @@ public class MeetingController {
   ){
     Meeting meeting = meetingService.findMeetingsById(id);
     model.addAttribute("meeting", meeting);
+    Integer count = meetingService.countMemberByMeeting(id);
+    model.addAttribute("count", count);
 
     return "meetings/meeting-detail";
+  }
+
+  @PostMapping("detail")
+  public String detail(
+      @RequestParam Long id
+  ){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+
+    meetingService.leaveMeeting(id, userId);
+
+    return "redirect:/meetings";
   }
 
   @GetMapping("/modal/alarm-invite.html")

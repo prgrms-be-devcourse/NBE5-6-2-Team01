@@ -13,10 +13,7 @@
         <div>
             <div class="div-flex" style="gap: 2vw;">
                 <div th:text="${meeting.title}" style="font-size: 40px; font-weight: bold">모임명</div>
-                <div>
-                    <span th:text="${meeting.creatorId}">모임장</span>
-                     | 멤버 <span></span>명
-                </div>
+                <div>멤버 <span th:text="${count}"></span>명</div>
             </div>
             <p th:text="${meeting.description}"></p>
         </div>
@@ -26,7 +23,10 @@
                 멤버 보기
             </a>
 
-            <a class="meeting-button">모임 탈퇴</a>
+            <form th:action="@{/meetings/detail}" onsubmit="return confirmLeave();" method="post">
+                <button type="submit" class="meeting-button">모임 탈퇴</button>
+                <input type="hidden" name="id" th:value="${meeting.id}" />
+            </form>
         </div>
     </div>
 
@@ -71,6 +71,10 @@
             'popupWindow',
             `width=${popupWidth},height=${popupHeight},left=${left},top=${top},resizable=yes,scrollbars=yes`
         );
+      }
+
+      function confirmLeave() {
+          return confirm("정말로 모임을 탈퇴하시겠습니까?");
       }
     </script>
 </main>
