@@ -4,6 +4,7 @@ import com.grepp.synapse4.app.model.user.dto.request.EditInfoRequest;
 import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.app.model.user.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import static com.grepp.synapse4.app.model.auth.code.Role.ROLE_ADMIN;
 import static com.grepp.synapse4.app.model.auth.code.Role.ROLE_USER;
 
 @Service
@@ -79,4 +81,27 @@ public class UserService {
         }
     }
 
+    public void signupAdmin(UserSignUpRequest request) {
+        User user = buildUser(request);
+        user.setRole(ROLE_ADMIN);
+        user.setIsSurvey(false);
+        user.setActivated(true);
+        user.setDeletedAt(null);
+        userRepository.save(user);
+    }
+
+    public void signupUser(UserSignUpRequest request) {
+        User user = buildUser(request);
+        user.setRole(ROLE_USER);
+        userRepository.save(user);
+    }
+
+    private User buildUser(UserSignUpRequest req) {
+        return User.builder()
+                .userAccount(req.getUserAccount())
+                .password(passwordEncoder.encode(req.getPassword()))
+                .email(req.getEmail())
+                .nickname(req.getNickname())
+                .build();
+    }
 }

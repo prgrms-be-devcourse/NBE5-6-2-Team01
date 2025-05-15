@@ -10,13 +10,20 @@ import lombok.ToString;
 
 public class CurationResultDto {
 
+    private Long id;
     private String title;
     private String name;
     private String address;
+    private boolean active;
 
-    public CurationResultDto(String title, String name, String address) {
+    public CurationResultDto(Long id,String title, String name, String address, Boolean active) {
+        this.id = id;
         this.title = title;
         this.name = name;
         this.address = address;
+        this.active = active;
     }
+
+
+
 }

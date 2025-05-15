@@ -22,16 +22,29 @@
   <div class="grid grid-cols-3 gap-6">
     <div th:each="result : ${curationResults}"
          class="border rounded-lg bg-white p-4 shadow-sm hover:shadow-md transition">
-      <!-- 주제명 -->
+
       <p class="text-xs text-gray-400 mb-2">
         주제명: <span th:text="${result.title}">주제명</span>
       </p>
-      <!-- 식당명 -->
+
       <h3 class="font-medium text-lg mb-1"
           th:text="${result.name}">식당명</h3>
-      <!-- 식당 위치 -->
+
       <p class="text-sm text-gray-600 mb-3"
          th:text="${result.address}">식당 위치</p>
+
+      <p class="text-sm mb-2"
+         th:text="${result.active} ? '현재: 활성' : '현재: 비활성'">현재 상태</p>
+
+      <form th:action="@{/admin/curation/toggle/{id}(id=${result.id})}"
+            method="post">
+        <button type="submit"
+                class="px-3 py-1 border rounded"
+                th:text="${result.active} ? '비활성화' : '활성화'">
+          토글
+        </button>
+      </form>
+
     </div>
   </div>
 
