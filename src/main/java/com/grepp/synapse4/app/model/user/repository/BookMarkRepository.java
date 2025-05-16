@@ -2,6 +2,7 @@ package com.grepp.synapse4.app.model.user.repository;
 
 
 
+import com.grepp.synapse4.app.model.user.dto.BookMarkDto;
 import com.grepp.synapse4.app.model.user.dto.RankingDto;
 import com.grepp.synapse4.app.model.user.entity.Bookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,5 +41,19 @@ public interface BookMarkRepository extends JpaRepository<Bookmark, Long> {
         count(b) desc
     """)
     List<RankingDto> findRestaurantRanking();
-}
 
+    @Query("""
+select new com.grepp.synapse4.app.model.user.dto.MyBookMarkDto(
+    u.id,
+    b.id,
+    b.createdAt,
+    r.id,
+    r.name,
+    r.address)
+from Bookmark b
+join b.restaurant r
+join b.user u
+where u.id = :userId
+""")
+    List<BookMarkDto> findmybookmark(Long userId);
+}

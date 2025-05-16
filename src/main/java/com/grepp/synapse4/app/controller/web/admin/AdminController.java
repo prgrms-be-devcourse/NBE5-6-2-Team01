@@ -4,7 +4,7 @@ import com.grepp.synapse4.app.model.llm.CurationResultService;
 import com.grepp.synapse4.app.model.llm.CurationService;
 import com.grepp.synapse4.app.model.llm.code.*;
 import com.grepp.synapse4.app.model.llm.dto.AdminCurationDto;
-import com.grepp.synapse4.app.model.llm.dto.CurationResultDto;
+import com.grepp.synapse4.app.model.llm.dto.AdminCurationResultDto;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.user.UserService;
@@ -13,7 +13,6 @@ import com.grepp.synapse4.app.model.user.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,7 +67,7 @@ public class AdminController {
 
     @GetMapping("/curation/list")
     public String curationList(Model model) {
-        List<CurationResultDto> curationResults = curationResultService.getResultsByCurationId();
+        List<AdminCurationResultDto> curationResults = curationResultService.getResultsByCurationId();
         model.addAttribute("curationResults", curationResults);
         return "admin/curationList";
     }
