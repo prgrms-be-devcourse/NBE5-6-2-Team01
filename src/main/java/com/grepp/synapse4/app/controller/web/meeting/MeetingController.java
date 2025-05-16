@@ -1,15 +1,21 @@
 package com.grepp.synapse4.app.controller.web.meeting;
 
-import com.grepp.synapse4.app.controller.web.meeting.payload.MeetingInviteRequest;
-import com.grepp.synapse4.app.controller.web.meeting.payload.MeetingRegistRequest;
+import com.grepp.synapse4.app.controller.web.meeting.payload.meeting.MeetingInviteRequest;
+import com.grepp.synapse4.app.controller.web.meeting.payload.meeting.MeetingRegistRequest;
+import com.grepp.synapse4.app.controller.web.meeting.payload.vote.VoteRegistRequest;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
+import com.grepp.synapse4.app.model.meeting.VoteService;
 import com.grepp.synapse4.app.model.meeting.code.Purpose;
 import com.grepp.synapse4.app.model.meeting.code.State;
 import com.grepp.synapse4.app.model.meeting.dto.MeetingDto;
 import com.grepp.synapse4.app.model.meeting.dto.MeetingMemberDto;
+import com.grepp.synapse4.app.model.meeting.dto.VoteDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.meeting.entity.MeetingMember;
+import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
+import com.grepp.synapse4.app.model.user.BookMarkService;
 import com.grepp.synapse4.app.model.user.CustomUserDetailsService;
+import com.grepp.synapse4.app.model.user.entity.Bookmark;
 import com.grepp.synapse4.app.model.user.entity.User;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -34,6 +40,8 @@ public class MeetingController {
 
   private final MeetingService meetingService;
   private final CustomUserDetailsService customUserDetailsService;
+  private final BookMarkService bookmarkService;
+  private final VoteService voteService;
 
   @GetMapping
   public String meeting(Model model){
@@ -82,6 +90,8 @@ public class MeetingController {
     model.addAttribute("meeting", meeting);
     Integer count = meetingService.countMemberByMeeting(id);
     model.addAttribute("count", count);
+    List<Vote> voteList = voteService.findVoteListById(id);
+    model.addAttribute("voteList", voteList);
 
     return "meetings/meeting-detail";
   }
@@ -121,6 +131,9 @@ public class MeetingController {
     Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
 
     Boolean result = meetingService.updateInvitedState(id, userId, state);
+//    if(result){
+//      return "redirect:/meetings";
+//    }
 
     return "redirect:/meetings/modal/alarm-invite.html";
   }
@@ -189,5 +202,39 @@ public class MeetingController {
     meetingService.inviteUser(dto);
 
     return "redirect:/meetings/modal/meeting-invite.html?id="+id;
+  }
+
+  @GetMapping("vote-regist")
+  @PreAuthorize("isAuthenticated()")
+  public String voteRegist(
+      Model model,
+      @RequestParam Long id
+  ){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+
+    model.addAttribute("voteRegistRequest", new VoteRegistRequest());
+    List<Bookmark> bookmarkList = bookmarkService.findByUserId(userId);
+    model.addAttribute("bookmarkList", bookmarkList);
+    model.addAttribute("id", id);
+
+    return "meetings/vote/vote-regist";
+  }
+
+  @PostMapping("vote-regist")
+  @PreAuthorize("isAuthenticated()")
+  public String voteRegist(
+      @Valid VoteRegistRequest form,
+      @RequestParam Long id,
+//      @RequestParam List<Long> selectedList,
+      BindingResult bindingResult
+  ){
+    if(bindingResult.hasErrors()){
+      return "redirect:/meetings/detail?id="+id;
+    }
+    VoteDto dto = form.toDto(id);
+    voteService.registVote(dto);
+
+    return "redirect:/meetings/detail?id="+id;
   }
 }

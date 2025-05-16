@@ -4,14 +4,14 @@ package com.grepp.synapse4.app.model.user.repository;
 
 import com.grepp.synapse4.app.model.user.dto.RankingDto;
 import com.grepp.synapse4.app.model.user.entity.Bookmark;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface BookMarkRepository extends JpaRepository<Bookmark, Long> {
+  List<Bookmark> findAllByUserId(Long userId);
 
 
     @Query("""
@@ -41,4 +41,3 @@ public interface BookMarkRepository extends JpaRepository<Bookmark, Long> {
     """)
     List<RankingDto> findRestaurantRanking();
 }
-

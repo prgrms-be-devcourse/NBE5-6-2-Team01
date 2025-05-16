@@ -1,28 +1,20 @@
 package com.grepp.synapse4.app.model.user;
 
-
 import com.grepp.synapse4.app.model.user.entity.Bookmark;
 import com.grepp.synapse4.app.model.user.repository.BookMarkRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class BookmarkService {
+@Transactional
+public class BookMarkService {
 
-    private final BookMarkRepository bookMarkRepository;
+  private final BookMarkRepository bookmarkRepository;
 
-    public List<Bookmark> findByUserId(Long userId) {
-        return bookMarkRepository.findByUserId(userId);
-    }
-
-
-
-
-
-
+  public List<Bookmark> findByUserId(Long userId) {
+    return bookmarkRepository.findAllByUserId(userId);
+  }
 }
