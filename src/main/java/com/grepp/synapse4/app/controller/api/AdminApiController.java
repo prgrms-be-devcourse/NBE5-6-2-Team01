@@ -1,6 +1,6 @@
 package com.grepp.synapse4.app.controller.api;
 
-import com.grepp.synapse4.app.model.user.BookmarkService;
+import com.grepp.synapse4.app.model.user.BookMarkService;
 import com.grepp.synapse4.app.model.user.SurveyService;
 import com.grepp.synapse4.app.model.user.dto.BookMarkDto;
 import com.grepp.synapse4.app.model.user.dto.SurveyDto;
@@ -26,7 +26,7 @@ import java.util.List;
 public class AdminApiController {
 
     private final SurveyService surveyService;
-    private final BookmarkService bookmarkService;
+    private final BookMarkService bookmarkService;
 
     // TODO : survey 엔티티변경(이넘값)으로인해 변경해야함
     @GetMapping("/users/prefer/{userId}")
