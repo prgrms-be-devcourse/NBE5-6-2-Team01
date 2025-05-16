@@ -38,6 +38,20 @@
           <button type="submit" class="text-red-600 text-sm hover:underline">회원탈퇴</button>
         </form>
       </div>
+
+      <form id="deleteForm" th:action="@{/mypage/delete}" method="post">
+        <button type="button" onclick="confirmDelete()" class="btn btn-danger">회원 탈퇴</button>
+      </form>
+
+      <script>
+        function confirmDelete() {
+          if (confirm("회원탈퇴 하시겠습니까?")) {
+            document.getElementById("deleteForm").submit();
+          } else {
+            window.location.href = "/mypage";
+          }
+        }
+      </script>
     </div>
   </div>
 </main>
