@@ -1,6 +1,7 @@
 main{
   padding: 2.5vw 15vw;
   width: 100%;
+  height: 100%;
   align-content: center;
 }
 h2{
@@ -25,14 +26,12 @@ a {
 }
 
 .meeting-button {
-  display: inline-block;
   padding: 10px 20px;
   background-color: #e0e0e0;
   border: 1px solid #333;
   border-radius: 8px;
   font-weight: bold;
   font-size: 1.2vw;
-  height: auto;
   cursor: pointer;
 }
 
@@ -55,7 +54,7 @@ a {
 .vote{
   display: flex;
   justify-content: space-between;
-  padding: 2vw;
+  padding: 1.5vw 2vw;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 2vh;
