@@ -22,7 +22,7 @@ public class MyPageController {
 
     private final UserService userService;
 
-    @GetMapping
+    @GetMapping(value = {"","/"})
     public String myPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
 
         User user = userDetails.getUser();
