@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -88,7 +89,7 @@ public class SecurityConfig {
                 .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/img/**", "/css/**").permitAll()
-                .requestMatchers("/", "/user/signin","/user/signup").permitAll()
+                .requestMatchers("/", "/user/signin","/user/signup", "/user/**").permitAll()
                 .requestMatchers("/mypage","/mypage/**").authenticated()
                         .requestMatchers("/meetings/**").permitAll() // 미팅추가완료
                 .anyRequest().permitAll()
@@ -118,7 +119,6 @@ public class SecurityConfig {
         return http.build();
 
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

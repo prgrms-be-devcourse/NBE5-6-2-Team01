@@ -3,16 +3,14 @@ package com.grepp.synapse4.app.model.user;
 import com.grepp.synapse4.app.model.user.dto.CustomUserDetails;
 import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.app.model.user.repository.UserRepository;
-import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 
 
 @Service
@@ -22,8 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-
-    // 메서드명 다르게함
     @Override
     public UserDetails loadUserByUsername(String userAccount) throws UsernameNotFoundException {
         User user = userRepository.findByUserAccount(userAccount)
@@ -34,8 +30,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
+    public Long loadUserIdByAccount(String account) throws UsernameNotFoundException{
+        User user = userRepository.findByUserAccount(account)
+            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        return user.getId();
+    }
 
+    public Boolean findUserByAccount(String account) throws UsernameNotFoundException{
+        return userRepository.existsByUserAccount(account);
+    }
 }
-
-
-
