@@ -1,10 +1,15 @@
 package com.grepp.synapse4.app.model.meeting;
 
+import com.grepp.synapse4.app.model.meeting.code.State;
 import com.grepp.synapse4.app.model.meeting.dto.VoteDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
+import com.grepp.synapse4.app.model.meeting.entity.MeetingMember;
 import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
+import com.grepp.synapse4.app.model.meeting.entity.vote.VoteMember;
+import com.grepp.synapse4.app.model.meeting.repository.MeetingMemberRepository;
 import com.grepp.synapse4.app.model.meeting.repository.MeetingRepository;
-import com.grepp.synapse4.app.model.meeting.repository.VoteRepository;
+import com.grepp.synapse4.app.model.meeting.repository.vote.VoteMemberRepository;
+import com.grepp.synapse4.app.model.meeting.repository.vote.VoteRepository;
 import com.grepp.synapse4.app.model.restaurant.entity.Restaurant;
 import com.grepp.synapse4.app.model.restaurant.repository.RestaurantRepository;
 import java.util.List;
@@ -21,11 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class VoteService {
 
   private final VoteRepository voteRepository;
+  private final VoteMemberRepository voteMemberRepository;
   private final MeetingRepository meetingRepository;
+  private final MeetingMemberRepository meetingMemberRepository;
   private final RestaurantRepository restaurantRepository;
   private final ModelMapper mapper;
 
-  public void registVote(VoteDto dto) {
+  public Vote registVote(VoteDto dto) {
     Vote vote = new Vote();
     Meeting meeting = meetingRepository.findById(dto.getMeetingId())
         .orElseThrow(() -> new RuntimeException("모임을 찾지 못했습니다"));
@@ -40,7 +47,19 @@ public class VoteService {
     vote.setMeeting(meeting);
     vote.setRestaurant(restaurant);
 
-    voteRepository.save(vote);
+    return voteRepository.save(vote);
+  }
+
+  public void registVoteMember(Vote vote, Long meetingId){
+    List<MeetingMember> memberList = meetingMemberRepository.findAllByMeetingIdAndState(meetingId, State.ACCEPT);
+
+    for(MeetingMember member:memberList){
+      VoteMember voteMember = new VoteMember();
+      voteMember.setUser(member.getUser());
+      voteMember.setVote(vote);
+
+      voteMemberRepository.save(voteMember);
+    }
   }
 
   public List<Vote> findVoteListById(Long meetingId) {

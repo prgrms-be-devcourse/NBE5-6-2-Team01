@@ -233,7 +233,9 @@ public class MeetingController {
       return "redirect:/meetings/detail?id="+id;
     }
     VoteDto dto = form.toDto(id);
-    voteService.registVote(dto);
+    Vote vote = voteService.registVote(dto);
+
+    voteService.registVoteMember(vote, id);
 
     return "redirect:/meetings/detail?id="+id;
   }
