@@ -16,7 +16,7 @@
       <div class="invite-wrapper">
         <input type="text" name="account" placeholder="초대할 ID를 입력해주세요." class="invite-input"/>
         <input type="hidden" name="id" th:value="${meetingId}" />
-        <button type="submit" class="invite-button">초대하기</button>
+        <button type="submit" class="invite-button" style="border: transparent;">초대하기</button>
       </div>
       <div class="error" th:if="${error}" th:text="${error}" style="color: red; margin-top: 10px;"></div>
     </form>

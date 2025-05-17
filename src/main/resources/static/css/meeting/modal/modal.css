@@ -21,6 +21,7 @@ body{
   background: #fff;
   height: 60vh;
   overflow-y: auto;
+  border-radius: 8px;
 }
 
 .modal-close {
@@ -45,6 +46,7 @@ body{
 .message {
   flex: 1;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   font-size: 14px;
 }
@@ -107,7 +109,7 @@ body{
 .invite-button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: mediumpurple;
+  background-color: #27a69a;
   border-radius: 8px;
   color: white;
   font-size: 1.4vw;
@@ -125,6 +127,7 @@ body{
   align-items: center;
   gap: 2vw;
   margin-top: 1.5vh;
+
 }
 .invite-input{
   flex: 1;
