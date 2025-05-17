@@ -6,9 +6,8 @@ import com.grepp.synapse4.app.model.llm.code.*;
 import com.grepp.synapse4.app.model.llm.dto.AdminCurationDto;
 import com.grepp.synapse4.app.model.llm.dto.AdminCurationResultDto;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
+import com.grepp.synapse4.app.model.meeting.dto.AdminMeetingDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
-import com.grepp.synapse4.app.model.user.BookmarkService;
-import com.grepp.synapse4.app.model.user.PreferService;
 import com.grepp.synapse4.app.model.user.UserService;
 import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import com.grepp.synapse4.app.model.user.entity.User;
@@ -43,7 +42,7 @@ public class AdminController {
 
     @GetMapping("/meetings")
     public String meetings(Model model) {
-        List<Meeting> meetings = meetingService.findAll();
+        List<AdminMeetingDto> meetings = meetingService.findAllForAdmin();
         model.addAttribute("meetings", meetings);
         return "admin/meetings";
     }
