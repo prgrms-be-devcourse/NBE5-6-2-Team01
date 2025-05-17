@@ -77,7 +77,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers(
                                 "/recommend/**", "/meetings/**",
-                                "/mypage/**", "/bookmark/**"
+                                "/mypage/**", "/bookmarks/**"
                         ).authenticated()
                         .anyRequest().permitAll()
                 )
@@ -120,5 +120,3 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 }
-
-

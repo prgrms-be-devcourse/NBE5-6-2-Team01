@@ -30,7 +30,6 @@ public class AdminApiController {
     private final BookmarkService bookmarkService;
     private final PreferService preferService;
 
-    // TODO : survey 엔티티변경(이넘값)으로인해 변경해야함
     @GetMapping("/users/prefer/{userId}")
     public ResponseEntity<ApiResponse<List<SurveyDto>>> getUserPrefer(
             @PathVariable Long userId) {

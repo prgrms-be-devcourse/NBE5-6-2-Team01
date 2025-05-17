@@ -3,6 +3,7 @@ package com.grepp.synapse4.app.model.user.repository;
 
 
 import com.grepp.synapse4.app.model.user.dto.BookMarkDto;
+import com.grepp.synapse4.app.model.user.dto.MyBookMarkDto;
 import com.grepp.synapse4.app.model.user.dto.RankingDto;
 import com.grepp.synapse4.app.model.user.entity.Bookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -55,5 +56,5 @@ join b.restaurant r
 join b.user u
 where u.id = :userId
 """)
-    List<BookMarkDto> findmybookmark(Long userId);
+    List<MyBookMarkDto> findmybookmark(Long userId);
 }
