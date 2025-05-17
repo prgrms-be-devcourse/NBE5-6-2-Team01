@@ -62,9 +62,9 @@ a {
 }
 .vote-button{
   display: inline-block;
-  padding: 7px 12px;
-  background-color: #e0e0e0;
-  border: 1px solid #333;
+  padding: 10px 15px;
+  background-color: #27a69a;
+  color: white;
   border-radius: 8px;
   font-weight: bold;
   font-size: 1.1vw;
