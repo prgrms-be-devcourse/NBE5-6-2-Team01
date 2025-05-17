@@ -14,7 +14,6 @@
         <div class="empty" th:if="${#lists.isEmpty(invitedList)}" style="height: 60vh;">
             초대받은 모임이 없습니다.
         </div>
-        <input type="checkbox" name="selectedBookmarks">
         <li th:each="invite:${invitedList}" class="notification-item">
             <div class="message">
                 <strong th:text="${invite.meeting.title}"></strong>
