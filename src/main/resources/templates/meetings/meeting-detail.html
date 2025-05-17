@@ -11,9 +11,9 @@
 <main layout:fragment="content">
   <div class="header">
     <div>
-      <div class="div-flex" style="gap: 2vw; margin-bottom: 10px;">
+      <div class="div-flex" style="gap: 2vw; margin-bottom: 10px; align-items: center">
         <div th:text="${meeting.title}" style="font-size: 40px; font-weight: bold">모임명</div>
-        <div>멤버 <span th:text="${count}"></span>명</div>
+        <div style="font-weight: bold;">멤버 <span th:text="${count}"></span>명</div>
       </div>
       <p th:text="${meeting.description}"></p>
     </div>
@@ -22,9 +22,8 @@
          th:onclick="'openPopup(' + ${meeting.id} + '); return false;'">
         멤버 보기
       </a>
-
       <form th:action="@{/meetings/detail}" onsubmit="return confirmLeave();" method="post">
-        <button type="submit" class="meeting-button">모임 탈퇴</button>
+        <button type="submit" class="meeting-button" style="height: 100%;">모임 탈퇴</button>
         <input type="hidden" name="id" th:value="${meeting.id}"/>
       </form>
     </div>

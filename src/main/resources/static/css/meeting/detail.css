@@ -13,7 +13,6 @@ a {
 
 .div-flex{
   display: flex;
-  align-items: center;
   align-content: center;
 }
 
@@ -39,6 +38,7 @@ a {
   width: 100%;
   height: 60vh;
   border: 1px solid #ccc;
+  border-radius: 8px;
   box-sizing: border-box;
   font-size: large;
   font-weight: bold;
