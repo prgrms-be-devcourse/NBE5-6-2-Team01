@@ -1,4 +1,4 @@
-package com.grepp.synapse4.app.model.meeting.repository;
+package com.grepp.synapse4.app.model.meeting.repository.vote;
 
 import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
 import java.util.List;
