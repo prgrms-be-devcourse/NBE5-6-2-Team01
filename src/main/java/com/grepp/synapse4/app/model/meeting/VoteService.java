@@ -100,4 +100,8 @@ public class VoteService {
 
     return isVotedMap;
   }
+
+  public List<VoteMember> findJoinedListByVoteId(Long id, Boolean isJoined) {
+    return voteMemberRepository.findAllByVoteIdAndIsJoined(id, isJoined);
+  }
 }

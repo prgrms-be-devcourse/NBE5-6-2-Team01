@@ -8,14 +8,6 @@ body{
   align-items: center;
 }
 
-.empty{
-  height: 60vh;
-  font-size: large;
-  font-weight: bold;
-  text-align: center;
-  align-content: center;
-}
-
 .modal {
   width: 70vw;
   background: #fff;
@@ -46,7 +38,6 @@ body{
 .message {
   flex: 1;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   font-size: 14px;
 }
@@ -131,6 +122,13 @@ body{
   border-radius: 5px;
 }
 
+.empty-alarm{
+  height: 60vh;
+  font-size: large;
+  font-weight: bold;
+  text-align: center;
+  align-content: center;
+}
 .empty{
   width: 100%;
   height: 37vh;
