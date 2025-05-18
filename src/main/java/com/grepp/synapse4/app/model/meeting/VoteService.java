@@ -67,7 +67,7 @@ public class VoteService {
   }
 
   public List<Vote> findVoteListByMeetingId(Long meetingId) {
-    return voteRepository.findAllByMeetingId(meetingId);
+    return voteRepository.findAllByMeetingIdOrderByMeetingDate(meetingId);
   }
 
   public List<VoteMember> findVoteListByUserId(Long userId) {

@@ -1,8 +1,10 @@
 package com.grepp.synapse4.app.controller.web.meeting;
 
 import com.grepp.synapse4.app.controller.web.meeting.payload.vote.VoteRegistRequest;
+import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.VoteService;
 import com.grepp.synapse4.app.model.meeting.dto.VoteDto;
+import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
 import com.grepp.synapse4.app.model.meeting.entity.vote.VoteMember;
 import com.grepp.synapse4.app.model.user.BookMarkService;
@@ -32,6 +34,7 @@ public class VoteController {
   private final CustomUserDetailsService customUserDetailsService;
   private final BookMarkService bookmarkService;
   private final VoteService voteService;
+  private final MeetingService meetingService;
 
   @GetMapping("vote-regist")
   @PreAuthorize("isAuthenticated()")
@@ -41,6 +44,9 @@ public class VoteController {
   ){
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+
+    Meeting meeting = meetingService.findMeetingsById(id);
+    model.addAttribute("isDutch", meeting.getIsDutch());
 
     VoteRegistRequest request = new VoteRegistRequest();
     request.setMeetingId(id);

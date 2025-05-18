@@ -46,10 +46,12 @@
         <div>
           <div th:text="${vote.title}" style="font-size: 25px; font-weight: bold;">투표명</div>
           <div th:text="${vote.description}" style="margin-bottom: 5px;">투표 설명</div>
-          <div>더치페이 여부:
-            <span th:if="${vote.isDutch}" th:text="Y">터치페이 여부</span>
-            <span th:unless="${vote.isDutch}" th:text="N">터치페이 여부</span>
-          </div>
+          <th:block th:if="${meeting.isDutch}">
+            <div>더치페이 여부:
+              <span th:if="${vote.isDutch}" th:text="Y">터치페이 여부</span>
+              <span th:unless="${vote.isDutch}" th:text="N">터치페이 여부</span>
+            </div>
+          </th:block>
           <div style="margin-bottom: 2vh;">마감 일자: <span th:text="${#temporals.format(vote.endedAt, 'yyyy년 MM월 dd일 HH시 mm분')}">투표 마감일자</span></div>
           <div style="font-weight: bold;">모임 일자: <span th:text="${#temporals.format(vote.meetingDate, 'yyyy년 MM월 dd일 HH시 mm분')}">모임 일자</span></div>
         </div>

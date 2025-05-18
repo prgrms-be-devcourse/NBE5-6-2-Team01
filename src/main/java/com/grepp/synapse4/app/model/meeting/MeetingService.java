@@ -52,7 +52,6 @@ public class MeetingService {
 
   public List<Meeting> findMeetingsByUserId(Long userId){
     List<MeetingMember> meetingMemberList =  meetingMemberRepository.findAllByUserIdAndStateAndDeletedAtIsNull(userId, State.ACCEPT);
-    log.info("meetingMemberList: {}", meetingMemberList);
 
     return meetingMemberList.stream()
         .map(MeetingMember::getMeeting)

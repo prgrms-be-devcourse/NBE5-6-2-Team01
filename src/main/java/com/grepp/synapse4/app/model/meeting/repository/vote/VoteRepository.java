@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
-  List<Vote> findAllByMeetingId(Long meetingId);
+  List<Vote> findAllByMeetingIdOrderByMeetingDate(Long meetingId);
 
 }
