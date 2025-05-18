@@ -39,10 +39,11 @@ public class MeetingService {
 
   public void registMeeting(MeetingDto dto){
     Meeting meeting = mapper.map(dto, Meeting.class);
-    meetingRepository.save(meeting);
-
     User user = userRepository.findById(dto.getCreatorId())
                       .orElseThrow(() -> new RuntimeException("유저를 찾지 못했습니다."));
+    meeting.setUser(user);
+    meetingRepository.save(meeting);
+
     MeetingMember meetingMember = new MeetingMember();
     meetingMember.setState(State.ACCEPT);
     meetingMember.setMeeting(meeting);
@@ -74,6 +75,13 @@ public class MeetingService {
         .orElseThrow(() -> new RuntimeException("해당 멤버가 없습니다."));
 
     meetingMemberRepository.delete(member);
+
+    List<MeetingMember> memberList = meetingMemberRepository.findAllByMeetingId(id);
+    if(memberList.isEmpty()){
+      Meeting meeting = meetingRepository.findById(id)
+          .orElseThrow(() -> new RuntimeException("모임을 찾지 못했습니다"));
+      meetingRepository.delete(meeting);
+    }
   }
 
   public List<User> findMemberListByMeetingId(Long meetingId, State state) {
