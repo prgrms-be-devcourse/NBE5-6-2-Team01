@@ -54,19 +54,25 @@ public class VoteController {
   @PreAuthorize("isAuthenticated()")
   public String voteRegist(
       @Valid VoteRegistRequest form,
-      @RequestParam Long id,
 //      @RequestParam List<Long> selectedList,
-      BindingResult bindingResult
+      BindingResult bindingResult,
+      Model model
   ){
     if(bindingResult.hasErrors()){
-      return "redirect:/meetings/detail?id="+id;
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+
+      List<Bookmark> bookmarkList = bookmarkService.findByUserId(userId);
+      model.addAttribute("bookmarkList", bookmarkList);
+
+      return "meetings/vote/vote-regist";
     }
-    VoteDto dto = form.toDto(id);
+    VoteDto dto = form.toDto();
     Vote vote = voteService.registVote(dto);
 
-    voteService.registVoteMember(vote, id);
+    voteService.registVoteMember(vote, dto.getMeetingId());
 
-    return "redirect:/meetings/detail?id="+id;
+    return "redirect:/meetings/detail?id="+dto.getMeetingId();
   }
 
   @GetMapping("vote")
@@ -111,8 +117,6 @@ public class VoteController {
     List<VoteMember> notJoinedList = voteService.findJoinedListByVoteId(id, false);
     model.addAttribute("notJoinedList", notJoinedList);
     model.addAttribute("notJoinedCount", notJoinedList.size());
-    log.info("joinedList: {}", joinedList);
-    log.info("notJoinedList: {}", notJoinedList);
 
     return "meetings/vote/vote-result";
   }

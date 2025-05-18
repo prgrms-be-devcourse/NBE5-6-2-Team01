@@ -15,11 +15,10 @@ form{
 }
 
 .title-wrapper {
-  display: flex;
+  width: 93%;
   margin-bottom: 4vh;
 }
 .title-wrapper input[type="text"] {
-  width: 100%;
   padding: 5px 15px;
   font-size: 18px;
   border: 1px solid #ddd;
@@ -27,6 +26,7 @@ form{
 }
 
 .detail-wrapper{
+  flex: 1;
   background-color: #FAFAFA;
   border-radius: 8px;
   padding: 30px;
@@ -36,12 +36,6 @@ form{
   width: 100%;
   margin-bottom: 20px;
 }
-
-.input-group {
-  display: block;
-  margin-bottom: 6px;
-}
-
 
 .radio-group {
   display: flex;
@@ -102,4 +96,9 @@ form{
   border-radius: 8px;
   font-weight: bold;
   font-size: 16px;
+}
+.error{
+  font-size: 14px;
+  margin-top: 5px;
+  color: orangered;
 }
