@@ -71,7 +71,7 @@
             </button>
           </th:block>
           <th:block th:if="${vote.endedAt.isBefore(T(java.time.LocalDateTime).now())}">
-            <button class="vote-move disabled">투표 마감</button>
+            <button class="vote-move ended">투표 마감</button>
           </th:block>
 
           <a th:href="@{'/meetings/vote-result'(id=${vote.id})}" class="vote-move">투표 결과보기</a>
