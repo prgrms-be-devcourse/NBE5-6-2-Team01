@@ -22,7 +22,7 @@ public class VoteRegistRequest {
   @NotNull(message = "식당 1개를 필수로 선택해주세요.")
   private Long restaurantId;
 
-  public VoteDto toDto(Long meetingId){
+  public VoteDto toDto(){
     VoteDto voteDto = new VoteDto();
 
     voteDto.setMeetingId(meetingId);
