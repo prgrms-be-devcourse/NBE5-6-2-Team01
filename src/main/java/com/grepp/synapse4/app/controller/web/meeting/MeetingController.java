@@ -122,7 +122,6 @@ public class MeetingController {
 
     List<MeetingMember> invitedList = meetingService.findInviteByUserId(userId);
     model.addAttribute("invitedList", invitedList);
-    log.info("invitedList: {}", invitedList);
 
     return "meetings/modal/alarm-invite";
   }
