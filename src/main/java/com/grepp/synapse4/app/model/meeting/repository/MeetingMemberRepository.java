@@ -20,4 +20,6 @@ public interface MeetingMemberRepository extends JpaRepository<MeetingMember, Lo
   Integer countByMeetingIdAndState(Long meetingId, State state);
 
   List<MeetingMember> findAllByMeetingIdAndState(Long meetingId, State state);
+
+  List<MeetingMember> findAllByMeetingId(Long meetingId);
 }
