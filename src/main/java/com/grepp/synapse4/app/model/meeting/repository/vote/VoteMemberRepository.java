@@ -11,4 +11,6 @@ public interface VoteMemberRepository extends JpaRepository<VoteMember, Long> {
   List<VoteMember> findAllByUserIdAndIsVoted(Long userId, boolean isVoted);
 
   VoteMember findByVoteIdAndUserId(Long voteId, Long userId);
+
+  List<VoteMember> findAllByVoteIdAndIsJoined(Long voteId, boolean isJoined);
 }

@@ -10,7 +10,7 @@
     <h1>투표 알림</h1>
 </div>
 <div class="modal">
-    <div class="empty" th:if="${#lists.isEmpty(votedList)}">
+    <div class="empty-alarm" th:if="${#lists.isEmpty(votedList)}">
         현재 투표중인 것이 없습니다.
     </div>
     <ul class="notification-list">

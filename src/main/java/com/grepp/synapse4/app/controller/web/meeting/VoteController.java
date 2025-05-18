@@ -62,7 +62,6 @@ public class VoteController {
       return "redirect:/meetings/detail?id="+id;
     }
     VoteDto dto = form.toDto(id);
-    log.info("dto: {}", dto);
     Vote vote = voteService.registVote(dto);
 
     voteService.registVoteMember(vote, id);
@@ -97,6 +96,26 @@ public class VoteController {
     return "redirect:/meetings/detail?id="+vote.getMeeting().getId();
   }
 
+  @GetMapping("vote-result")
+  @PreAuthorize("isAuthenticated()")
+  public String voteResult(
+      @RequestParam Long id,
+      Model model
+  ){
+    Vote vote = voteService.findVoteByVoteId(id);
+    model.addAttribute("vote", vote);
+
+    List<VoteMember> joinedList = voteService.findJoinedListByVoteId(id, true);
+    model.addAttribute("joinedList", joinedList);
+    model.addAttribute("joinedCount", joinedList.size());
+    List<VoteMember> notJoinedList = voteService.findJoinedListByVoteId(id, false);
+    model.addAttribute("notJoinedList", notJoinedList);
+    model.addAttribute("notJoinedCount", notJoinedList.size());
+    log.info("joinedList: {}", joinedList);
+    log.info("notJoinedList: {}", notJoinedList);
+
+    return "meetings/vote/vote-result";
+  }
 
   @GetMapping("/modal/alarm-vote.html")
   @PreAuthorize("isAuthenticated()")
@@ -112,6 +131,8 @@ public class VoteController {
   @PostMapping("/modal/alarm-vote.html")
   @PreAuthorize("isAuthenticated()")
   public String votePopup() {
+
+
     return "redirect:/meetings/modal/alarm-vote";
   }
 }
