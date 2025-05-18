@@ -12,9 +12,11 @@ import com.grepp.synapse4.app.model.meeting.repository.vote.VoteMemberRepository
 import com.grepp.synapse4.app.model.meeting.repository.vote.VoteRepository;
 import com.grepp.synapse4.app.model.restaurant.entity.Restaurant;
 import com.grepp.synapse4.app.model.restaurant.repository.RestaurantRepository;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -69,8 +71,19 @@ public class VoteService {
   }
 
   public List<VoteMember> findVoteListByUserId(Long userId) {
-    return voteMemberRepository.findAllByUserIdAndIsVoted(userId, false);
+    List<VoteMember> memberList = voteMemberRepository.findAllByUserIdAndIsVoted(userId, false);
+
+    List<VoteMember> filteredList = memberList.stream()
+        .filter(member -> {
+          LocalDateTime endedAt = member.getVote().getEndedAt();
+          boolean isBeforeNow = endedAt.isAfter(LocalDateTime.now());
+          return isBeforeNow;
+        })
+        .collect(Collectors.toList());
+
+    return filteredList;
   }
+
 
   public Vote findVoteByVoteId(Long id) {
     return voteRepository.findById(id)
