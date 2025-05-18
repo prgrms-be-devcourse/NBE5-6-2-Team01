@@ -11,6 +11,7 @@ import com.grepp.synapse4.app.model.meeting.dto.MeetingMemberDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.meeting.entity.MeetingMember;
 import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
+import com.grepp.synapse4.app.model.meeting.entity.vote.VoteMember;
 import com.grepp.synapse4.app.model.user.BookMarkService;
 import com.grepp.synapse4.app.model.user.CustomUserDetailsService;
 import com.grepp.synapse4.app.model.user.entity.User;
@@ -83,6 +84,9 @@ public class MeetingController {
       @RequestParam Long id,
       Model model
   ){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+
     Meeting meeting = meetingService.findMeetingsById(id);
     model.addAttribute("meeting", meeting);
     Integer count = meetingService.countMemberByMeeting(id);
@@ -90,17 +94,10 @@ public class MeetingController {
     List<Vote> voteList = voteService.findVoteListByMeetingId(id);
     model.addAttribute("voteList", voteList);
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
-
-//    Map<Long, Boolean> isVotedMap = new HashMap<>();
-//    for (Vote vote : voteList) {
-//      boolean hasVoted = voteService.isUserVoted(voteList, userId);
-//      isVotedMap.put(vote.getId(), hasVoted);
-//    }
-    Map<Long, Boolean> isVotedMap = voteService.isVotedByUser(voteList, userId);
-    model.addAttribute("isVotedMap", isVotedMap);
-    log.info("isVotedMap: {}", isVotedMap);
+    if(!voteList.isEmpty()){
+      Map<Long, Boolean> isVotedMap = voteService.isVotedByUser(voteList, userId);
+      model.addAttribute("isVotedMap", isVotedMap);
+    }
 
     return "meetings/meeting-detail";
   }
