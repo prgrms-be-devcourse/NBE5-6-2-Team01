@@ -88,7 +88,7 @@ a {
   cursor: pointer;
 }
 .vote-move.disabled {
-  padding: 9px 18px;
+  padding: 12px 18px;
   background-color: #cccccc;
   border: none;
   color: #666666;
