@@ -42,10 +42,11 @@ public class VoteController {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
 
-    model.addAttribute("voteRegistRequest", new VoteRegistRequest());
+    VoteRegistRequest request = new VoteRegistRequest();
+    request.setMeetingId(id);
+    model.addAttribute("voteRegistRequest", request);
     List<Bookmark> bookmarkList = bookmarkService.findByUserId(userId);
     model.addAttribute("bookmarkList", bookmarkList);
-    model.addAttribute("id", id);
 
     return "meetings/vote/vote-regist";
   }
