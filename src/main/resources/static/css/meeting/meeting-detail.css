@@ -75,6 +75,8 @@ a {
   font-weight: bold;
 }
 
+.button-wrapper{
+}
 .vote-move{
   padding: 8px 16px;
   background-color: #e0e0e0;
@@ -82,5 +84,21 @@ a {
   border-radius: 8px;
   font-weight: bold;
   font-size: 15px;
+  text-align: center;
   cursor: pointer;
+}
+.vote-move.disabled {
+  padding: 9px 18px;
+  background-color: #cccccc;
+  border: none;
+  color: #666666;
+  pointer-events: none;
+  cursor: default;
+}
+
+.button-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: end;
 }

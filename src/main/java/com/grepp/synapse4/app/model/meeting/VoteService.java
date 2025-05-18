@@ -12,7 +12,9 @@ import com.grepp.synapse4.app.model.meeting.repository.vote.VoteMemberRepository
 import com.grepp.synapse4.app.model.meeting.repository.vote.VoteRepository;
 import com.grepp.synapse4.app.model.restaurant.entity.Restaurant;
 import com.grepp.synapse4.app.model.restaurant.repository.RestaurantRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -62,7 +64,38 @@ public class VoteService {
     }
   }
 
-  public List<Vote> findVoteListById(Long meetingId) {
+  public List<Vote> findVoteListByMeetingId(Long meetingId) {
     return voteRepository.findAllByMeetingId(meetingId);
+  }
+
+  public List<VoteMember> findVoteListByUserId(Long userId) {
+    return voteMemberRepository.findAllByUserIdAndIsVoted(userId, false);
+  }
+
+  public Vote findVoteByVoteId(Long id) {
+    return voteRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("투표를 찾지 못했습니다."));
+  }
+
+  public void vote(Long voteId, Long userId, Boolean isJoined) {
+    VoteMember voteMember = voteMemberRepository.findByVoteIdAndUserId(voteId, userId);
+
+    voteMember.setIsJoined(isJoined);
+    voteMember.setIsVoted(true);
+    voteMemberRepository.save(voteMember);
+  }
+
+
+  public Map<Long, Boolean> isVotedByUser(List<Vote> voteList, Long userId) {
+    Map<Long, Boolean> isVotedMap = new HashMap<>();
+
+    for(Vote vote:voteList){
+      VoteMember voteMember = voteMemberRepository.findByVoteIdAndUserId(vote.getId(), userId);
+      Boolean isVoted = voteMember.getIsVoted();
+
+      isVotedMap.put(vote.getId(), isVoted);
+    }
+
+    return isVotedMap;
   }
 }
