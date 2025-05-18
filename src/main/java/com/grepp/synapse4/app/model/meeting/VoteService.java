@@ -91,9 +91,11 @@ public class VoteService {
 
     for(Vote vote:voteList){
       VoteMember voteMember = voteMemberRepository.findByVoteIdAndUserId(vote.getId(), userId);
-      Boolean isVoted = voteMember.getIsVoted();
+      if(voteMember != null){
+        Boolean isVoted = voteMember.getIsVoted();
 
-      isVotedMap.put(vote.getId(), isVoted);
+        isVotedMap.put(vote.getId(), isVoted);
+      }
     }
 
     return isVotedMap;

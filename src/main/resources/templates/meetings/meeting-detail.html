@@ -55,18 +55,23 @@
         </div>
 
         <div class="button-wrapper">
-          <a th:if="${!isVotedMap[vote.id]}"
+          <a th:if="${isVotedMap[vote.id] == false}"
              th:href="@{'/meetings/vote'(id=${vote.id})}"
              class="vote-move">
             투표하기
           </a>
-          <a th:if="${isVotedMap[vote.id]}"
+          <a th:if="${isVotedMap[vote.id] == true}"
              class="vote-move disabled">
             이미 투표함
+          </a>
+          <a th:if="${isVotedMap[vote.id] == null}"
+             class="vote-move disabled">
+            투표 불가능
           </a>
 
           <a class="vote-move">투표 결과보기</a>
         </div>
+
       </div>
     </div>
   </div>
