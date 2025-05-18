@@ -28,7 +28,10 @@ public class Meeting extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Purpose purpose;
     private Boolean isDutch;
-    private Long creatorId;
+//    private Long creatorId;
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User user;
 
     @OneToMany(mappedBy = "meeting")
     private List<MeetingMember> meetingMembers = new ArrayList<>();
@@ -44,7 +47,7 @@ public class Meeting extends BaseEntity {
             ", description='" + description + '\'' +
             ", purpose=" + purpose +
             ", isDutch=" + isDutch +
-            ", creatorId=" + creatorId +
+            ", user=" + user +
             ", createdAt=" + createdAt +
             '}';
     }
