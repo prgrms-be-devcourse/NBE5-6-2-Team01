@@ -30,31 +30,43 @@ public interface BookMarkRepository extends JpaRepository<Bookmark, Long> {
         r.id,
         count(b),
         r.name,
-        r.address
+        r.address,
+        r.branch,
+        r.category,
+        rd.rowBusinessTime
       )
       from Bookmark b
       join b.restaurant r
+      join r.detail rd
       group by
         r.id,
         r.name,
-        r.address
+        r.address,
+        r.branch,
+        r.category,
+        rd.rowBusinessTime
       order by
         count(b) desc
     """)
     List<RankingDto> findRestaurantRanking();
 
     @Query("""
-select new com.grepp.synapse4.app.model.user.dto.MyBookMarkDto(
-    u.id,
-    b.id,
-    b.createdAt,
-    r.id,
-    r.name,
-    r.address)
-from Bookmark b
-join b.restaurant r
-join b.user u
-where u.id = :userId
-""")
+      select new com.grepp.synapse4.app.model.user.dto.MyBookMarkDto(
+        u.id,
+        b.id,
+        b.createdAt,
+        r.id,
+        r.name,
+        r.address,
+        r.branch,
+        r.category,
+        rd.rowBusinessTime
+      )
+      from Bookmark b
+      join b.user u
+      join b.restaurant r
+      join r.detail rd
+      where u.id = :userId
+    """)
     List<MyBookMarkDto> findmybookmark(Long userId);
 }
