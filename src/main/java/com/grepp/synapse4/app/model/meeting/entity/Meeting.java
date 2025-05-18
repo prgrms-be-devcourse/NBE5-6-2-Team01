@@ -2,6 +2,7 @@ package com.grepp.synapse4.app.model.meeting.entity;
 
 import com.grepp.synapse4.app.model.meeting.code.Purpose;
 import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
+import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.infra.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,7 +28,10 @@ public class Meeting extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Purpose purpose;
     private Boolean isDutch;
-    private Long creatorId;
+//    private Long creatorId;
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User user;
 
     @OneToMany(mappedBy = "meeting")
     private List<MeetingMember> meetingMembers = new ArrayList<>();
@@ -43,7 +47,7 @@ public class Meeting extends BaseEntity {
             ", description='" + description + '\'' +
             ", purpose=" + purpose +
             ", isDutch=" + isDutch +
-            ", creatorId=" + creatorId +
+            ", user=" + user +
             ", createdAt=" + createdAt +
             '}';
     }
