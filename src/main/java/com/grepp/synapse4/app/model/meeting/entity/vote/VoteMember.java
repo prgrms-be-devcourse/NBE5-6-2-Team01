@@ -19,6 +19,7 @@ public class VoteMember {
     @Column(name = "vote_member_id")
     private Long id;
     private Boolean isVoted = false;
+    private Boolean isJoined;
 
     @ManyToOne
     @JoinColumn(name = "vote_id")

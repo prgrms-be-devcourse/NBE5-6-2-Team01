@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>모임 상세</title>
-  <link rel="stylesheet" th:href="@{/css/meeting/detail.css}"/>
+  <link rel="stylesheet" th:href="@{/css/meeting/meeting-detail.css}"/>
 </head>
 <body>
 <main layout:fragment="content">
@@ -46,10 +46,27 @@
         <div>
           <div th:text="${vote.title}" style="font-size: 25px; font-weight: bold;">투표명</div>
           <div th:text="${vote.description}" style="margin-bottom: 5px;">투표 설명</div>
-          <div style="margin-bottom: 2vh;">모임 일자: <span th:text="${#temporals.format(vote.meetingDate, 'yyyy년 MM월 dd일 HH시 mm분')}">모임 일자</span></div>
-          <div style="font-weight: bold;">마감 일자: <span th:text="${#temporals.format(vote.endedAt, 'yyyy년 MM월 dd일 HH시 mm분')}">투표 마감일자</span></div>
+          <div>더치페이 여부:
+            <span th:if="${vote.isDutch}" th:text="Y">터치페이 여부</span>
+            <span th:unless="${vote.isDutch}" th:text="N">터치페이 여부</span>
+          </div>
+          <div style="margin-bottom: 2vh;">마감 일자: <span th:text="${#temporals.format(vote.endedAt, 'yyyy년 MM월 dd일 HH시 mm분')}">투표 마감일자</span></div>
+          <div style="font-weight: bold;">모임 일자: <span th:text="${#temporals.format(vote.meetingDate, 'yyyy년 MM월 dd일 HH시 mm분')}">모임 일자</span></div>
         </div>
-        <button class="vote-button">투표하기</button>
+
+        <div class="button-wrapper">
+          <a th:if="${!isVotedMap[vote.id]}"
+             th:href="@{'/meetings/vote'(id=${vote.id})}"
+             class="vote-move">
+            투표하기
+          </a>
+          <a th:if="${isVotedMap[vote.id]}"
+             class="vote-move disabled">
+            이미 투표함
+          </a>
+
+          <a class="vote-move">투표 결과보기</a>
+        </div>
       </div>
     </div>
   </div>

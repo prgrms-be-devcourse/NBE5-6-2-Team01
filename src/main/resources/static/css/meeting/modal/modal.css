@@ -51,11 +51,6 @@ body{
   font-size: 14px;
 }
 
-.buttons {
-  display: flex;
-  gap: 6px;
-}
-
 .button {
   padding: 6px 12px;
   font-size: 12px;
@@ -76,7 +71,7 @@ body{
 }
 
 .vote {
-  background-color: #00aaff;
+  background-color: #27a69a;
   color: white;
 }
 
