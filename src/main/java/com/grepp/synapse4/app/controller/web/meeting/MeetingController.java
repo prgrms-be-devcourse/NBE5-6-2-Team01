@@ -2,23 +2,21 @@ package com.grepp.synapse4.app.controller.web.meeting;
 
 import com.grepp.synapse4.app.controller.web.meeting.payload.meeting.MeetingInviteRequest;
 import com.grepp.synapse4.app.controller.web.meeting.payload.meeting.MeetingRegistRequest;
-import com.grepp.synapse4.app.controller.web.meeting.payload.vote.VoteRegistRequest;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.VoteService;
 import com.grepp.synapse4.app.model.meeting.code.Purpose;
 import com.grepp.synapse4.app.model.meeting.code.State;
 import com.grepp.synapse4.app.model.meeting.dto.MeetingDto;
 import com.grepp.synapse4.app.model.meeting.dto.MeetingMemberDto;
-import com.grepp.synapse4.app.model.meeting.dto.VoteDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.meeting.entity.MeetingMember;
 import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
 import com.grepp.synapse4.app.model.user.BookMarkService;
 import com.grepp.synapse4.app.model.user.CustomUserDetailsService;
-import com.grepp.synapse4.app.model.user.entity.Bookmark;
 import com.grepp.synapse4.app.model.user.entity.User;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,7 +38,6 @@ public class MeetingController {
 
   private final MeetingService meetingService;
   private final CustomUserDetailsService customUserDetailsService;
-  private final BookMarkService bookmarkService;
   private final VoteService voteService;
 
   @GetMapping
@@ -90,8 +87,20 @@ public class MeetingController {
     model.addAttribute("meeting", meeting);
     Integer count = meetingService.countMemberByMeeting(id);
     model.addAttribute("count", count);
-    List<Vote> voteList = voteService.findVoteListById(id);
+    List<Vote> voteList = voteService.findVoteListByMeetingId(id);
     model.addAttribute("voteList", voteList);
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+
+//    Map<Long, Boolean> isVotedMap = new HashMap<>();
+//    for (Vote vote : voteList) {
+//      boolean hasVoted = voteService.isUserVoted(voteList, userId);
+//      isVotedMap.put(vote.getId(), hasVoted);
+//    }
+    Map<Long, Boolean> isVotedMap = voteService.isVotedByUser(voteList, userId);
+    model.addAttribute("isVotedMap", isVotedMap);
+    log.info("isVotedMap: {}", isVotedMap);
 
     return "meetings/meeting-detail";
   }
@@ -136,18 +145,6 @@ public class MeetingController {
 //    }
 
     return "redirect:/meetings/modal/alarm-invite.html";
-  }
-
-  @GetMapping("/modal/alarm-vote.html")
-  @PreAuthorize("isAuthenticated()")
-  public String votePopup(Model model) {
-    return "meetings/modal/alarm-vote";
-  }
-
-  @PostMapping("/modal/alarm-vote.html")
-  @PreAuthorize("isAuthenticated()")
-  public String votePopup() {
-    return "redirect:/meetings/modal/alarm-vote";
   }
 
   @GetMapping("/modal/meeting-member-list.html")
@@ -202,41 +199,5 @@ public class MeetingController {
     meetingService.inviteUser(dto);
 
     return "redirect:/meetings/modal/meeting-invite.html?id="+id;
-  }
-
-  @GetMapping("vote-regist")
-  @PreAuthorize("isAuthenticated()")
-  public String voteRegist(
-      Model model,
-      @RequestParam Long id
-  ){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
-
-    model.addAttribute("voteRegistRequest", new VoteRegistRequest());
-    List<Bookmark> bookmarkList = bookmarkService.findByUserId(userId);
-    model.addAttribute("bookmarkList", bookmarkList);
-    model.addAttribute("id", id);
-
-    return "meetings/vote/vote-regist";
-  }
-
-  @PostMapping("vote-regist")
-  @PreAuthorize("isAuthenticated()")
-  public String voteRegist(
-      @Valid VoteRegistRequest form,
-      @RequestParam Long id,
-//      @RequestParam List<Long> selectedList,
-      BindingResult bindingResult
-  ){
-    if(bindingResult.hasErrors()){
-      return "redirect:/meetings/detail?id="+id;
-    }
-    VoteDto dto = form.toDto(id);
-    Vote vote = voteService.registVote(dto);
-
-    voteService.registVoteMember(vote, id);
-
-    return "redirect:/meetings/detail?id="+id;
   }
 }
