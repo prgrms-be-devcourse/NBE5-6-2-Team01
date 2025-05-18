@@ -12,7 +12,7 @@
   <form th:action="@{/meetings/vote-regist}" th:object="${voteRegistRequest}" onsubmit="return confirmRegist();" method="post">
     <input type="hidden" th:field="*{meetingId}" />
     <div class="input-wrapper">
-      <div>
+      <div style="width: 30vw;">
         <div class="title-wrapper">
           <input type="text" th:field="*{title}" placeholder="투표 제목을 입력해주세요." class="invite-input"/>
           <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
@@ -37,17 +37,19 @@
           </div>
 
           <div>
-            <label>더치페이 여부</label>
-            <div class="radio-group">
-              <label>
-                <input type="radio" th:field="*{isDutch}" th:value="true"/>
-                <span>네, 더치페이 예정이에요!</span>
-              </label>
-              <label>
-                <input type="radio" th:field="*{isDutch}" th:value="false" checked />
-                <span>아니요, 더치페이가 없어요!</span>
-              </label>
-            </div>
+            <th:block th:if="${isDutch}">
+              <label>더치페이 여부</label>
+              <div class="radio-group">
+                <label>
+                  <input type="radio" th:field="*{isDutch}" th:value="true"/>
+                  <span>네, 더치페이 예정이에요!</span>
+                </label>
+                <label>
+                  <input type="radio" th:field="*{isDutch}" th:value="false" checked />
+                  <span>아니요, 더치페이가 없어요!</span>
+                </label>
+              </div>
+            </th:block>
           </div>
         </div>
       </div>
