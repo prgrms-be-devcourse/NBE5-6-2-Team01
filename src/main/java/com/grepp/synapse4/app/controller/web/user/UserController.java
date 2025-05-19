@@ -40,7 +40,7 @@ public class UserController {
         }
 
         // 2차: 중복 필드 검사
-        userService.validateDuplicateUser(request, bindingResult);
+        userService.validateSignup(request, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "user/signup";
