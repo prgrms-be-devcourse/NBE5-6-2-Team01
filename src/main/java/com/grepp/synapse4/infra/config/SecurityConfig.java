@@ -68,16 +68,16 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         // user
-                        .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/img/**","/static/**").permitAll()
                         .requestMatchers(
                                 "/", "/user/signin", "/user/signup",
                                 "/search/**", "/curation/**",
                                 "/restaurant/**", "/ranking/**"
                         ).permitAll()
                         .requestMatchers(
-                                "api/bookmarks/toggle/**",
-                                "/recommend/**", "/meetings/**",
-                                "/mypage/**", "/bookmarks/**"
+                                "api/bookmarks/toggle/**","/api/users/**",
+                                "/recommend/**", "/meetings/**","/edit-prefer/**",
+                                "/mypage/**", "/bookmarks/**","/surveys/**"
                         ).authenticated()
                         .anyRequest().permitAll()
                 )
@@ -86,6 +86,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/signin")
                         .usernameParameter("userAccount")
                         .passwordParameter("password")
+                        .defaultSuccessUrl("/login-redirect", true)
                         .successHandler(successHandler())
                         .failureUrl("/user/signin?error=true")
                         .permitAll()
