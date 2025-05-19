@@ -34,6 +34,9 @@ body{
   padding: 20px 30px;
   border-bottom: 1px solid #eee;
 }
+.notification-item.invite{
+  padding: 10px 15px;
+}
 
 .message {
   flex: 1;
@@ -73,7 +76,7 @@ body{
 }
 
 .nickname{
-  font-size: 25px;
+  font-size: 22px;
 }
 
 .account{
@@ -129,17 +132,24 @@ body{
   text-align: center;
   align-content: center;
 }
-.empty{
+
+.invite-list-wrapper{
   width: 100%;
-  height: 37vh;
+  height: 33.5vh;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   box-sizing: border-box;
+  list-style-type: none;
+  padding-left: 0;
+}
+.invite-list-wrapper.empty{
   font-size: large;
   font-weight: bold;
   text-align: center;
   align-content: center;
+  margin-top: 10px;
 }
 .scroll-container {
   max-height: 37vh;
   overflow-y: auto;
-  /*scrollbar-width: none;*/
 }
