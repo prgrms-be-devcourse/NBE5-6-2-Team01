@@ -36,7 +36,7 @@ public class Meeting extends BaseEntity {
     @OneToMany(mappedBy = "meeting")
     private List<MeetingMember> meetingMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meeting")
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
     private List<Vote> votes = new ArrayList<>();
 
     @Override
