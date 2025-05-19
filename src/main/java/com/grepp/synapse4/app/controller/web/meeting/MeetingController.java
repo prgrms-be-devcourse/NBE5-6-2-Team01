@@ -126,11 +126,7 @@ public class MeetingController {
       @RequestParam String state
   ){
     Long userId = customUserDetailsService.loadUserIdByAccount();
-
-    Boolean result = meetingService.updateInvitedState(id, userId, state);
-//    if(result){
-//      return "redirect:/meetings";
-//    }
+    meetingService.updateInvitedState(id, userId, state);
 
     return "redirect:/meetings/modal/alarm-invite.html";
   }

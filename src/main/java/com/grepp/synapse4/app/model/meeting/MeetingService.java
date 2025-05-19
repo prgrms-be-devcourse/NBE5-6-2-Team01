@@ -123,19 +123,15 @@ public class MeetingService {
     meetingMemberRepository.save(member);
   }
 
-  public boolean updateInvitedState(Long meetingId, Long userId, String state) {
+  public void updateInvitedState(Long meetingId, Long userId, String state) {
     MeetingMember member = meetingMemberRepository.findByMeetingIdAndUserId(meetingId, userId)
         .orElseThrow(() -> new EntityNotFoundException("데이터를 찾지 못했습니다"));
 
     if (state.equals("REJECT")) {
       meetingMemberRepository.delete(member);
-      return false;
     } else if (state.equals("ACCEPT")) {
       member.setState(State.ACCEPT);
       meetingMemberRepository.save(member);
-      return true;
     }
-
-    return false;
   }
 }
