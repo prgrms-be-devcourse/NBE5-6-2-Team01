@@ -138,12 +138,4 @@ public class VoteController {
 
     return "meetings/modal/alarm-vote";
   }
-
-  @PostMapping("/modal/alarm-vote.html")
-  @PreAuthorize("isAuthenticated()")
-  public String votePopup() {
-
-
-    return "redirect:/meetings/modal/alarm-vote";
-  }
 }
