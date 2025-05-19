@@ -76,8 +76,8 @@ public class MeetingService {
 
     meetingMemberRepository.delete(member);
 
-    List<MeetingMember> memberList = meetingMemberRepository.findAllByMeetingId(id);
-    if(memberList.isEmpty()){
+    int memberCount = meetingMemberRepository.countByMeetingId(id);
+    if(memberCount == 0){
       Meeting meeting = meetingRepository.findById(id)
           .orElseThrow(() -> new RuntimeException("모임을 찾지 못했습니다"));
       meetingRepository.delete(meeting);
