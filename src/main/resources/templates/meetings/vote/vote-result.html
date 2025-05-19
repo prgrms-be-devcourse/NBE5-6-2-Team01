@@ -22,7 +22,7 @@
         <div th:text="${vote.restaurant.getName()}" style="font-size: 20px; font-weight: bold;">식당명</div>
         <div th:text="${vote.restaurant.getAddress()}">주소</div>
       </div>
-      <a th:href="@{'/meetings/vote-detail'(id=${vote.id})}" class="restaurant-move">식당 보기</a>
+      <a th:href="@{'/restaurant/detail/'+ ${vote.restaurant.getId()}}" class="restaurant-move">식당 보기</a>
     </div>
 
   <div class="result-wrapper">
