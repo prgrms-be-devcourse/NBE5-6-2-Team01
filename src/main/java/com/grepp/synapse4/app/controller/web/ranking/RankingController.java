@@ -23,7 +23,6 @@ public class RankingController {
 
 
     private final RestaurantService restaurantService;
-    private final BookmarkService bookmarkService;
 
     @GetMapping
     public String ranking(Model model) {
