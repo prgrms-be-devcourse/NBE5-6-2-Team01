@@ -14,7 +14,6 @@
       <form th:action="@{/mypage/edit-prefer/{id}(id=${surveyId})}" method="post"
             th:object="${surveyRequest}" class="space-y-4">
 
-      <!-- 회사 위치 -->
         <div>
           <label for="companyLocation" class="block font-semibold mb-1">회사 위치</label>
           <select th:field="*{companyLocation}" id="companyLocation"
@@ -26,7 +25,6 @@
           </select>
         </div>
 
-        <!-- 식사 목적 -->
         <div>
           <label for="purpose" class="block font-semibold mb-1">식사 목적</label>
           <select th:field="*{purpose}" id="purpose"
@@ -38,7 +36,6 @@
           </select>
         </div>
 
-        <!-- 동행 -->
         <div>
           <label for="companion" class="block font-semibold mb-1">주로 함께 식사하는 사람</label>
           <select th:field="*{companion}" id="companion"
@@ -50,7 +47,6 @@
           </select>
         </div>
 
-        <!-- 음식 종류 -->
         <div>
           <label for="favoriteCategory" class="block font-semibold mb-1">좋아하는 음식 종류</label>
           <select th:field="*{favoriteCategory}" id="favoriteCategory"
@@ -62,7 +58,6 @@
           </select>
         </div>
 
-        <!-- 분위기 -->
         <div>
           <label for="preferredMood" class="block font-semibold mb-1">선호 분위기</label>
           <select th:field="*{preferredMood}" id="preferredMood"
@@ -74,7 +69,6 @@
           </select>
         </div>
 
-        <!-- 제출 버튼 -->
         <div class="text-center pt-4">
           <button type="submit"
                   class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition">
