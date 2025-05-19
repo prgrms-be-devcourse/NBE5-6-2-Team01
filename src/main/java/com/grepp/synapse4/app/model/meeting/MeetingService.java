@@ -76,6 +76,7 @@ public class MeetingService {
 
     meetingMemberRepository.delete(member);
 
+    // 멤버가 없을 시 모임 제거
     int memberCount = meetingMemberRepository.countByMeetingId(id);
     if(memberCount == 0){
       Meeting meeting = meetingRepository.findById(id)
@@ -123,13 +124,13 @@ public class MeetingService {
     meetingMemberRepository.save(member);
   }
 
-  public void updateInvitedState(Long meetingId, Long userId, String state) {
+  public void updateInvitedState(Long meetingId, Long userId, State state) {
     MeetingMember member = meetingMemberRepository.findByMeetingIdAndUserId(meetingId, userId)
         .orElseThrow(() -> new EntityNotFoundException("데이터를 찾지 못했습니다"));
 
-    if (state.equals("REJECT")) {
+    if (state.equals(State.REJECT)) {
       meetingMemberRepository.delete(member);
-    } else if (state.equals("ACCEPT")) {
+    } else if (state.equals(State.ACCEPT)) {
       member.setState(State.ACCEPT);
       meetingMemberRepository.save(member);
     }

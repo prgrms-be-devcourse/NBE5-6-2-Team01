@@ -7,6 +7,9 @@ body{
   justify-content: center;
   align-items: center;
 }
+a{
+  text-decoration: none;
+}
 
 .modal {
   width: 70vw;
@@ -135,12 +138,13 @@ body{
 
 .invite-list-wrapper{
   width: 100%;
-  height: 33.5vh;
+  height: 32vh;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-sizing: border-box;
   list-style-type: none;
   padding-left: 0;
+  margin-bottom: 0px;
 }
 .invite-list-wrapper.empty{
   font-size: large;
