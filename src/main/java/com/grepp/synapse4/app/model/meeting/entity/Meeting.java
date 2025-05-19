@@ -28,7 +28,7 @@ public class Meeting extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Purpose purpose;
     private Boolean isDutch;
-//    private Long creatorId;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User user;

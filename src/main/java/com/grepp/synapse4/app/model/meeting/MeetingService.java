@@ -110,7 +110,16 @@ public class MeetingService {
   }
 
   public void inviteUser(MeetingMemberDto dto) {
-    MeetingMember member = mapper.map(dto, MeetingMember.class);
+    MeetingMember member = new MeetingMember();
+    Meeting meeting = meetingRepository.findById(dto.getMeetingId())
+        .orElseThrow(() -> new RuntimeException("모임을 찾지 못했습니다."));
+    User user = userRepository.findById(dto.getUserId())
+        .orElseThrow(() -> new RuntimeException("유저를 찾지 못했습니다."));
+
+    member.setState(State.WAIT);
+    member.setMeeting(meeting);
+    member.setUser(user);
+
     meetingMemberRepository.save(member);
   }
 
