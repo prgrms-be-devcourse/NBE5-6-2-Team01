@@ -11,8 +11,6 @@ import com.grepp.synapse4.app.model.meeting.dto.MeetingMemberDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.meeting.entity.MeetingMember;
 import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
-import com.grepp.synapse4.app.model.meeting.entity.vote.VoteMember;
-import com.grepp.synapse4.app.model.user.BookMarkService;
 import com.grepp.synapse4.app.model.user.CustomUserDetailsService;
 import com.grepp.synapse4.app.model.user.entity.User;
 import jakarta.validation.Valid;
@@ -43,8 +41,7 @@ public class MeetingController {
 
   @GetMapping
   public String meeting(Model model){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
 
     List<Meeting> meetingList = meetingService.findMeetingsByUserId(userId);
     model.addAttribute("meetingList", meetingList);
@@ -70,8 +67,7 @@ public class MeetingController {
       return "meetings/meeting-regist";
     }
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
 
     MeetingDto dto = form.toDto(userId);
     meetingService.registMeeting(dto);
@@ -84,8 +80,7 @@ public class MeetingController {
       @RequestParam Long id,
       Model model
   ){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
 
     Meeting meeting = meetingService.findMeetingsById(id);
     model.addAttribute("meeting", meeting);
@@ -106,8 +101,7 @@ public class MeetingController {
   public String detail(
       @RequestParam Long id
   ){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
 
     meetingService.leaveMeeting(id, userId);
 
@@ -117,8 +111,7 @@ public class MeetingController {
   @GetMapping("/modal/alarm-invite.html")
   @PreAuthorize("isAuthenticated()")
   public String invitePopup(Model model) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
 
     List<MeetingMember> invitedList = meetingService.findInviteByUserId(userId);
     model.addAttribute("invitedList", invitedList);
@@ -132,8 +125,7 @@ public class MeetingController {
       @RequestParam Long id,
       @RequestParam String state
   ){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
 
     Boolean result = meetingService.updateInvitedState(id, userId, state);
 //    if(result){
@@ -184,7 +176,7 @@ public class MeetingController {
       return "meetings/modal/meeting-invite";
     }
 
-    Long userId = customUserDetailsService.loadUserIdByAccount(account);
+    Long userId = customUserDetailsService.loadUserIdByAccount();
     Boolean existByMeetingMember = meetingService.findMemberByMeetingIdAndUserId(id, userId);
     if(existByMeetingMember){
       meetingService.setInviteModel(model, id, "이미 초대된 유저입니다.");

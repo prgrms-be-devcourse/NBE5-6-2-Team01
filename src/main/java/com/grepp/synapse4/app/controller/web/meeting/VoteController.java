@@ -42,8 +42,7 @@ public class VoteController {
       Model model,
       @RequestParam Long id
   ){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
 
     Meeting meeting = meetingService.findMeetingsById(id);
     model.addAttribute("isDutch", meeting.getIsDutch());
@@ -66,8 +65,7 @@ public class VoteController {
       Model model
   ){
     if(bindingResult.hasErrors()){
-      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+      Long userId = customUserDetailsService.loadUserIdByAccount();
 
       List<Bookmark> bookmarkList = bookmarkService.findByUserId(userId);
       model.addAttribute("bookmarkList", bookmarkList);
@@ -100,8 +98,7 @@ public class VoteController {
       @Valid Boolean isJoined,
       @RequestParam Long id
   ){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
     voteService.vote(id, userId, isJoined);
 
     Vote vote = voteService.findVoteByVoteId(id);
@@ -131,8 +128,7 @@ public class VoteController {
   @GetMapping("/modal/alarm-vote.html")
   @PreAuthorize("isAuthenticated()")
   public String votePopup(Model model) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Long userId = customUserDetailsService.loadUserIdByAccount(authentication.getName());
+    Long userId = customUserDetailsService.loadUserIdByAccount();
     List<VoteMember> votedList = voteService.findVoteListByUserId(userId);
     model.addAttribute("votedList", votedList);
 
