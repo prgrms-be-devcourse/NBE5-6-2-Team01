@@ -3,14 +3,18 @@ package com.grepp.synapse4.app.model.user.repository;
 
 
 import com.grepp.synapse4.app.model.user.dto.BookMarkDto;
+import com.grepp.synapse4.app.model.user.dto.BookMarkRegistDto;
 import com.grepp.synapse4.app.model.user.dto.MyBookMarkDto;
 import com.grepp.synapse4.app.model.user.dto.RankingDto;
 import com.grepp.synapse4.app.model.user.entity.Bookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookMarkRepository extends JpaRepository<Bookmark, Long> {
@@ -69,4 +73,16 @@ public interface BookMarkRepository extends JpaRepository<Bookmark, Long> {
       where u.id = :userId
     """)
     List<MyBookMarkDto> findmybookmark(Long userId);
+
+    Optional<Bookmark> findByUserIdAndRestaurantId(Long userId, Long restaurantId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Bookmark b WHERE b.user.id = :userId AND b.restaurant.id = :restaurantId")
+    void deleteByUserIdAndRestaurantId(Long userId, Long restaurantId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO bookmark (user_id, restaurant_id, created_at) VALUES (:userId, :restaurantId, CURRENT_TIMESTAMP)", nativeQuery = true)
+    int insertBookmark(Long userId, Long restaurantId);
 }

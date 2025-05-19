@@ -29,7 +29,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-
     public void signup(UserSignUpRequest request){
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         User user = request.toEntity(encodedPassword, ROLE_USER);

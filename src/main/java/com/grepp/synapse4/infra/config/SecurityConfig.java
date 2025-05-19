@@ -28,8 +28,7 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(UserDetailsService userDetailsService,
-                          PasswordEncoder passwordEncoder) {
+    public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -76,6 +75,7 @@ public class SecurityConfig {
                                 "/restaurant/**", "/ranking/**"
                         ).permitAll()
                         .requestMatchers(
+                                "api/bookmarks/toggle/**",
                                 "/recommend/**", "/meetings/**",
                                 "/mypage/**", "/bookmarks/**"
                         ).authenticated()
