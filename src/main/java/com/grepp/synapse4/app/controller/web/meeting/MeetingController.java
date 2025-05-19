@@ -176,7 +176,7 @@ public class MeetingController {
       return "meetings/modal/meeting-invite";
     }
 
-    Long userId = customUserDetailsService.loadUserIdByAccount();
+    Long userId = customUserDetailsService.loadUserIdByAccount(account);
     Boolean existByMeetingMember = meetingService.findMemberByMeetingIdAndUserId(id, userId);
     if(existByMeetingMember){
       meetingService.setInviteModel(model, id, "이미 초대된 유저입니다.");

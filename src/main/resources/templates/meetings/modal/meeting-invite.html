@@ -24,17 +24,19 @@
 
   <div style="margin-top: 8vh;">
     <span class="invite-header">초대된 멤버</span>
-    <div th:if="${#lists.isEmpty(invitedList)}" class="empty">
+    <div th:if="${#lists.isEmpty(invitedList)}" class="invite-list-wrapper empty">
       초대된 유저가 없습니다.
     </div>
-    <ul class="notification-list">
-      <li th:each="user:${invitedList}" class="notification-item">
-        <div class="user">
-          <span th:text="${user.nickname}" class="nickname">닉네임</span>
-          <span th:text="${user.userAccount}" class="account">아이디</span>
-        </div>
-      </li>
-    </ul>
+    <th:block th:if="${!#lists.isEmpty(invitedList)}">
+      <ul class="invite-list-wrapper">
+        <li th:each="user:${invitedList}" class="notification-item invite">
+          <div class="user">
+            <span th:text="${user.nickname}" class="nickname">닉네임</span>
+            <span th:text="${user.userAccount}" class="account">아이디</span>
+          </div>
+        </li>
+      </ul>
+    </th:block>
   </div>
 
 </div>
