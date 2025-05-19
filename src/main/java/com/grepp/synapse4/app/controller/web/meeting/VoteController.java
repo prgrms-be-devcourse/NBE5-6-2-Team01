@@ -7,7 +7,7 @@ import com.grepp.synapse4.app.model.meeting.dto.VoteDto;
 import com.grepp.synapse4.app.model.meeting.entity.Meeting;
 import com.grepp.synapse4.app.model.meeting.entity.vote.Vote;
 import com.grepp.synapse4.app.model.meeting.entity.vote.VoteMember;
-import com.grepp.synapse4.app.model.user.BookMarkService;
+import com.grepp.synapse4.app.model.user.BookmarkService;
 import com.grepp.synapse4.app.model.user.CustomUserDetailsService;
 import com.grepp.synapse4.app.model.user.entity.Bookmark;
 import jakarta.validation.Valid;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class VoteController {
 
   private final CustomUserDetailsService customUserDetailsService;
-  private final BookMarkService bookmarkService;
+  private final BookmarkService bookmarkService;
   private final VoteService voteService;
   private final MeetingService meetingService;
 
