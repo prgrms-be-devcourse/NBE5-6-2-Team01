@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class SurveyService {
 
@@ -30,7 +30,6 @@ public class SurveyService {
     }
 
     // 설문 최초 제출
-    @Transactional
     public void submitSurvey(SurveyRequest request, User user) {
         Survey survey = mapToSurveyEntity(request);
         survey.setUser(user);
@@ -42,7 +41,6 @@ public class SurveyService {
     }
 
     // 설문 수정
-    @Transactional
     public void updateSurvey(Long id, SurveyRequest request, User user) {
         Survey survey = surveyRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException("해당 설문이 존재하지 않습니다."));
@@ -55,7 +53,6 @@ public class SurveyService {
     }
 
     // 설문 -> SurveyRequest DTO
-    @Transactional
     public SurveyRequest getSurveyRequest(User user) {
         Survey survey = surveyRepository.findByUser(user)
             .orElseThrow(() -> new NoSuchElementException("설문이 존재하지 않습니다."));
@@ -64,7 +61,6 @@ public class SurveyService {
     }
 
     // 설문 ID 조회
-    @Transactional
     public Long getSurveyId(User user) {
         return surveyRepository.findByUser(user)
             .map(Survey::getId)
