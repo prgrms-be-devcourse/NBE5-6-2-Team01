@@ -32,7 +32,7 @@
       <div th:each="meeting:${meetingList}" class="group-card">
         <div class="group-info">
           <div>
-            <div th:text="${meeting.title}" style="font-size: 1.5vw; font-weight: bold"></div>
+            <div th:text="${meeting.title}" style="font-size: 25px; font-weight: bold"></div>
             <div th:text="${meeting.description}"
                  style="font-weight: bold; margin-bottom: 2vh;"></div>
             <div>모임 생성자: <span th:text="${meeting.user.nickname}"></span></div>

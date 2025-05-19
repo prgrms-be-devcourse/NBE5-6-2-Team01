@@ -30,7 +30,7 @@ a {
   border: 1px solid #333;
   border-radius: 8px;
   font-weight: bold;
-  font-size: 1.2vw;
+  font-size: 17px;
   cursor: pointer;
 }
 
@@ -49,12 +49,11 @@ a {
 .scroll-container {
   max-height: 59vh;
   overflow-y: auto;
-  /*scrollbar-width: none;*/
 }
 .vote{
   display: flex;
   justify-content: space-between;
-  padding: 1.5vw 2vw;
+  padding: 25px 30px;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 2vh;
@@ -67,7 +66,7 @@ a {
   color: white;
   border-radius: 8px;
   font-weight: bold;
-  font-size: 1.1vw;
+  font-size: 15px;
 }
 
 .vote-detail{

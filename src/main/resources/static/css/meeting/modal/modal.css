@@ -31,7 +31,7 @@ body{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2vw 3vw;
+  padding: 20px 30px;
   border-bottom: 1px solid #eee;
 }
 
@@ -73,7 +73,7 @@ body{
 }
 
 .nickname{
-  font-size: 2.2vw;
+  font-size: 25px;
 }
 
 .account{
@@ -98,13 +98,13 @@ body{
   background-color: #27a69a;
   border-radius: 8px;
   color: white;
-  font-size: 1.4vw;
+  font-size: 15px;
   height: auto;
   cursor: pointer;
 }
 
 .invite-header{
-  font-size: 2vw;
+  font-size: 20px;
   font-weight: bold;
 }
 .invite-wrapper{
