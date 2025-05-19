@@ -34,4 +34,7 @@ public class Vote extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
+    private List<VoteMember> voteMembers = new ArrayList<>();
 }
