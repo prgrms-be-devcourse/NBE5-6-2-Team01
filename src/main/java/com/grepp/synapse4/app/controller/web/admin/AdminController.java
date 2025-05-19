@@ -99,7 +99,7 @@ public class AdminController {
         }
 
         // 2차: 중복 필드 검사
-        userService.validateSignup(request, bindingResult);
+        userService.validateDuplicateUser(request, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "admin/signup";
