@@ -7,30 +7,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CurationResultService {
 
     private final CurationResultRepository repository;
-//    private EntityManager entityManager;
 
     public List<AdminCurationResultDto> getResultsByCurationId() {
-        return repository.findResultsByCurationId();
+        List<AdminCurationResultDto> results = repository.findResultsByCurationId();
+        results.sort(Comparator.comparing(AdminCurationResultDto::getTitle));
+        return results;
     }
 
-//    // Dirty-Checking 방식
-//    public void toggleActive(Long id) {
-//        CurationResult cr = repository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("CurationResult not found: " + id));
-//        cr.setActive(!cr.isActive());
-//        repository.flush();
-//        entityManager.clear();
-//    }
-
-    // 쿼리 modify 방식
     @Transactional
     public void toggleActive(Long id) {
 
@@ -42,6 +33,14 @@ public class CurationResultService {
         if (updated == 0) {
             throw new EntityNotFoundException("큐레이션 결과가 없습니다.");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<AdminCurationResultDto> searchByKeyword(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return List.of();
+        }
+        return repository.findResultsByCurationId();
     }
 }
 

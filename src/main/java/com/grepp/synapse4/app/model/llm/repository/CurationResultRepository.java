@@ -1,6 +1,7 @@
 package com.grepp.synapse4.app.model.llm.repository;
 
 import com.grepp.synapse4.app.model.llm.dto.AdminCurationResultDto;
+import com.grepp.synapse4.app.model.llm.dto.AdminSearchCurationDto;
 import com.grepp.synapse4.app.model.llm.entity.CurationResult;
 import feign.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,10 +35,4 @@ public interface CurationResultRepository extends JpaRepository<CurationResult, 
     int toggleActiveById(@Param("id") Long id);
 
     List<CurationResult> findAll();
-
-
-
-
-
 }
-

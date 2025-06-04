@@ -1,23 +1,18 @@
 package com.grepp.synapse4.app.controller.api;
 
+import com.grepp.synapse4.app.model.llm.CurationResultService;
+import com.grepp.synapse4.app.model.llm.dto.AdminCurationResultDto;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.dto.AdminMeetingMemberDto;
-import com.grepp.synapse4.app.model.meeting.dto.MeetingMemberDto;
 import com.grepp.synapse4.app.model.user.BookmarkService;
 import com.grepp.synapse4.app.model.user.PreferService;
-import com.grepp.synapse4.app.model.user.SurveyService;
 import com.grepp.synapse4.app.model.user.dto.BookMarkDto;
 import com.grepp.synapse4.app.model.user.dto.SurveyDto;
-import com.grepp.synapse4.app.model.user.entity.Bookmark;
-import com.grepp.synapse4.app.model.user.entity.Survey;
 import com.grepp.synapse4.infra.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +27,7 @@ public class AdminApiController {
     private final BookmarkService bookmarkService;
     private final PreferService preferService;
     private final MeetingService meetingService;
+    private final CurationResultService curationResultService;
 
     @GetMapping("/users/prefer/{userId}")
     public ResponseEntity<ApiResponse<List<SurveyDto>>> getUserPrefer(
@@ -49,9 +45,15 @@ public class AdminApiController {
 
     @GetMapping("meetingmember/{meetingId}")
     public ResponseEntity<ApiResponse<List<AdminMeetingMemberDto>>> getMeetingMember(
-            @PathVariable Long meetingId){
+            @PathVariable Long meetingId) {
         List<AdminMeetingMemberDto> dtos = meetingService.findAdminMeetingByUserNickname(meetingId);
         return ResponseEntity.ok(ApiResponse.success(dtos));
     }
 
+    @GetMapping("search/curation")
+    public ResponseEntity<ApiResponse<List<AdminCurationResultDto>>> getCurationResults(
+            @RequestParam(value = "keyword", required = false) String keyword) {
+        List<AdminCurationResultDto> results = curationResultService.searchByKeyword(keyword);
+        return ResponseEntity.ok(ApiResponse.success(results));
+    }
 }
