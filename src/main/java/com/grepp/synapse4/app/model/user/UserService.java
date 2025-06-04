@@ -4,6 +4,7 @@ import com.grepp.synapse4.app.model.user.dto.request.EditInfoRequest;
 import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.app.model.user.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -110,5 +111,10 @@ public class UserService {
         user.setActivated(false);
         user.setDeletedAt(LocalDateTime.now());
         userRepository.save(user);
+    }
+
+    public Optional<String> findUserIdByNicknameAndEmail(String nickname, String email) {
+        return userRepository.findByNicknameAndEmail(nickname, email)
+            .map(User::getUserAccount);
     }
 }

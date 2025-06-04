@@ -3,6 +3,7 @@ package com.grepp.synapse4.app.controller.web.user;
 import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import com.grepp.synapse4.app.model.user.UserService;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/user")
@@ -50,4 +52,23 @@ public class UserController {
         return "redirect:/user/signin";
     }
 
+    @GetMapping("/find-id")
+    public String showFindIdForm() {
+        return "user/find-id";
+    }
+
+    @PostMapping("/find-id")
+    public String processFindId(@RequestParam String nickname,
+        @RequestParam String email,
+        Model model) {
+        Optional<String> userAccount = userService.findUserIdByNicknameAndEmail(nickname, email);
+
+        if (userAccount.isPresent()) {
+            model.addAttribute("foundId", userAccount.get());
+        } else {
+            model.addAttribute("error", "일치하는 회원 정보를 찾을 수 없습니다.");
+        }
+
+        return "user/find-id";
+    }
 }
