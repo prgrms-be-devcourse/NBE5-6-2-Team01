@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class MeetingService {
 
   private final MeetingRepository meetingRepository;
@@ -40,7 +41,7 @@ public class MeetingService {
   }
 
   // 관리자페이지 모임멤버보기
-  @Transactional(readOnly = true)
+  @Transactional
   public List<AdminMeetingMemberDto> findAdminMeetingByUserNickname(Long meetingId) {
     return meetingMemberRepository.findUserNicknamesByMeetingId(meetingId);
   }
@@ -165,5 +166,5 @@ public class MeetingService {
       model.addAttribute("error", errorMessage);
     }
   }
-  
+
 }
