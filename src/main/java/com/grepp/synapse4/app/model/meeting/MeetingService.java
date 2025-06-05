@@ -41,7 +41,7 @@ public class MeetingService {
   }
 
   // 관리자페이지 모임멤버보기
-  @Transactional
+  @Transactional(readOnly = true)
   public List<AdminMeetingMemberDto> findAdminMeetingByUserNickname(Long meetingId) {
     return meetingMemberRepository.findUserNicknamesByMeetingId(meetingId);
   }
