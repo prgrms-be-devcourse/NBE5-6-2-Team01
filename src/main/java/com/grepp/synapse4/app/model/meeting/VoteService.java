@@ -134,4 +134,8 @@ public class VoteService {
   public List<VoteMember> findJoinedListByVoteId(Long id, Boolean isJoined) {
     return voteMemberRepository.findAllByVoteIdAndIsJoined(id, isJoined);
   }
+
+  public Boolean findJoinedByUserId(Long voteId, Long userId) {
+    return voteMemberRepository.findIsJoinedByVoteIdAndUserId(voteId, userId);
+  }
 }
