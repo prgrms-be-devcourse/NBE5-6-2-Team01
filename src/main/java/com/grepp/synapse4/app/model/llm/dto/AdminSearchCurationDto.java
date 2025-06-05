@@ -13,8 +13,9 @@ public class AdminSearchCurationDto {
     private String category;
     private String address;
     private String branch;
+    private boolean active;
 
-    public AdminSearchCurationDto(Long curationResultId, String title, Long restaurantId, String restaurantName, String category, String address, String branch) {
+    public AdminSearchCurationDto(Long curationResultId, String title, Long restaurantId, String restaurantName, String category, String address, String branch, boolean active) {
         this.curationResultId = curationResultId;
         this.title = title;
         this.restaurantId = restaurantId;
@@ -22,5 +23,6 @@ public class AdminSearchCurationDto {
         this.category = category;
         this.address = address;
         this.branch = branch;
+        this.active = true;
     }
 }

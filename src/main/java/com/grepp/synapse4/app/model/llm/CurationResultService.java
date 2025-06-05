@@ -1,6 +1,7 @@
 package com.grepp.synapse4.app.model.llm;
 
 import com.grepp.synapse4.app.model.llm.dto.AdminCurationResultDto;
+import com.grepp.synapse4.app.model.llm.dto.AdminSearchCurationDto;
 import com.grepp.synapse4.app.model.llm.repository.CurationResultRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class CurationResultService {
 
     private final CurationResultRepository repository;
 
+    @Transactional(readOnly = true)
     public List<AdminCurationResultDto> getResultsByCurationId() {
         List<AdminCurationResultDto> results = repository.findResultsByCurationId();
         results.sort(Comparator.comparing(AdminCurationResultDto::getTitle));
@@ -36,11 +38,11 @@ public class CurationResultService {
     }
 
     @Transactional(readOnly = true)
-    public List<AdminCurationResultDto> searchByKeyword(String keyword) {
+    public List<AdminSearchCurationDto> searchByKeyword(String keyword) {
         if (keyword == null || keyword.isEmpty()) {
             return List.of();
         }
-        return repository.findResultsByCurationId();
+        return repository.findByCurationTitleContaining(keyword);
     }
 }
 

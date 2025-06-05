@@ -17,7 +17,6 @@
       새로운 큐레이션 등록
     </button>
   </div>
-
   <div class="mb-6 flex items-center">
     <input
             type="text"
@@ -33,7 +32,6 @@
       검색
     </button>
   </div>
-
   <th:block th:each="result, iterStat : ${curationResults}"
             th:with="
               prevTitle = ${iterStat.index > 0} ? ${curationResults[iterStat.index - 1].title} : '',
@@ -76,6 +74,7 @@
     </th:block>
 
   </th:block>
+
   <div id="resultsModalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
   <div id="resultsModal" class="fixed inset-0 flex items-center justify-center hidden z-50 px-4">
     <div class="bg-white rounded-lg w-full max-w-2xl mx-auto shadow-lg h-[80vh] overflow-hidden">
@@ -118,9 +117,7 @@
           fetch(`/admin/curation/toggle/${id}`, {
             method: 'POST',
             redirect: 'manual',
-            headers: {
-              'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
           })
                   .then(response => {
                     const status = response.status;
@@ -177,30 +174,33 @@
                 })
                 .then(data => {
                   const allResults = data.data || [];
-                  const filtered = allResults.filter(item => item.title === keyword);
 
-                  if (filtered.length === 0) {
+                  if (allResults.length === 0) {
                     modalBody.innerHTML = '<p class="text-center text-gray-500">검색 결과가 없습니다.</p>';
                     modalTitle.textContent = `"${keyword}" 검색 결과`;
                     openModal();
                     return;
                   }
                   const grouped = {};
-                  filtered.forEach(item => {
-                    if (!grouped[item.title]) grouped[item.title] = [];
-                    grouped[item.title].push(item);
+                  allResults.forEach(item => {
+                    const titleKey = item.title;
+                    if (!grouped[titleKey]) grouped[titleKey] = [];
+                    grouped[titleKey].push(item);
                   });
-
                   let html = '';
                   Object.keys(grouped).forEach(titleKey => {
                     html += `<h3 class="text-lg font-semibold mt-4">${titleKey}</h3>`;
                     html += '<div class="grid grid-cols-3 gap-4 mt-2">';
-                    grouped[titleKey].forEach(r => {
-                      html += `
-                  <div class="border rounded-lg p-3 shadow-sm card ${r.active ? 'bg-gray-50' : 'bg-indigo-50'}" data-id="${r.id}">
-                    <p class="text-md font-medium mb-1">${r.name}</p>
+
+                    grouped[titleKey].forEach(r => {html += `
+                  <div class="border rounded-lg p-3 shadow-sm card ${
+                              r.active ? 'bg-gray-50' : 'bg-indigo-50'
+                      }" data-id="${r.curationResultId}">
+                    <p class="text-md font-medium mb-1">${r.restaurantName}</p>
                     <p class="text-sm text-gray-600 mb-1">${r.address}</p>
-                    <p class="text-sm font-medium mb-2 status-text ${r.active ? 'text-gray-600' : 'text-indigo-600'}" data-id="${r.id}">
+                    <p class="text-sm font-medium mb-2 status-text ${
+                              r.active ? 'text-gray-600' : 'text-indigo-600'
+                      }" data-id="${r.curationResultId}">
                       현재: ${r.active ? '활성' : '비활성'}
                     </p>
                     <button
@@ -210,13 +210,14 @@
                                       ? 'bg-gray-500 text-white hover:bg-gray-600'
                                       : 'bg-indigo-500 text-white hover:bg-indigo-600'
                       }"
-                      data-id="${r.id}"
+                      data-id="${r.curationResultId}"
                     >
                       ${r.active ? '비활성화' : '활성화'}
                     </button>
                   </div>
                 `;
                     });
+
                     html += '</div>';
                   });
 
@@ -242,9 +243,7 @@
         fetch(`/admin/curation/toggle/${id}`, {
           method: 'POST',
           redirect: 'manual',
-          headers: {
-            'Content-Type': 'application/json'
-          }
+          headers: { 'Content-Type': 'application/json' }
         })
                 .then(response => {
                   const status = response.status;

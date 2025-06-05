@@ -2,6 +2,7 @@ package com.grepp.synapse4.app.controller.api;
 
 import com.grepp.synapse4.app.model.llm.CurationResultService;
 import com.grepp.synapse4.app.model.llm.dto.AdminCurationResultDto;
+import com.grepp.synapse4.app.model.llm.dto.AdminSearchCurationDto;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
 import com.grepp.synapse4.app.model.meeting.dto.AdminMeetingMemberDto;
 import com.grepp.synapse4.app.model.user.BookmarkService;
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @RestController
 @Slf4j
@@ -51,9 +51,9 @@ public class AdminApiController {
     }
 
     @GetMapping("search/curation")
-    public ResponseEntity<ApiResponse<List<AdminCurationResultDto>>> getCurationResults(
+    public ResponseEntity<ApiResponse<List<AdminSearchCurationDto>>> getCurationResults(
             @RequestParam(value = "keyword", required = false) String keyword) {
-        List<AdminCurationResultDto> results = curationResultService.searchByKeyword(keyword);
+        List<AdminSearchCurationDto> results = curationResultService.searchByKeyword(keyword);
         return ResponseEntity.ok(ApiResponse.success(results));
     }
 }
