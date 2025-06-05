@@ -79,7 +79,7 @@ public class VoteController {
 
     voteService.registVoteMember(vote, dto.getMeetingId());
 
-    return "redirect:/meetings/detail/"+dto.getMeetingId();
+    return "redirect:/meetings/vote/"+vote.getId();
   }
 
   @GetMapping("vote/{id}")
