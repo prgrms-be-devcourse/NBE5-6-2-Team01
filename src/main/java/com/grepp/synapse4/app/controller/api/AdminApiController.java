@@ -4,7 +4,9 @@ import com.grepp.synapse4.app.model.llm.CurationResultService;
 import com.grepp.synapse4.app.model.llm.dto.AdminCurationResultDto;
 import com.grepp.synapse4.app.model.llm.dto.AdminSearchCurationDto;
 import com.grepp.synapse4.app.model.meeting.MeetingService;
+import com.grepp.synapse4.app.model.meeting.dto.AdminMeetingDto;
 import com.grepp.synapse4.app.model.meeting.dto.AdminMeetingMemberDto;
+import com.grepp.synapse4.app.model.meeting.dto.AdminMeetingSearchDto;
 import com.grepp.synapse4.app.model.user.BookmarkService;
 import com.grepp.synapse4.app.model.user.PreferService;
 import com.grepp.synapse4.app.model.user.dto.BookMarkDto;
@@ -54,6 +56,13 @@ public class AdminApiController {
     public ResponseEntity<ApiResponse<List<AdminSearchCurationDto>>> getCurationResults(
             @RequestParam(value = "keyword", required = false) String keyword) {
         List<AdminSearchCurationDto> results = curationResultService.searchByKeyword(keyword);
+        return ResponseEntity.ok(ApiResponse.success(results));
+    }
+
+    @GetMapping("search/meeting")
+    public ResponseEntity<ApiResponse<List<AdminMeetingSearchDto>>> getMeetings(
+            @RequestParam(value = "title", required = false) String title){
+        List<AdminMeetingSearchDto> results = meetingService.findAdminMeetingByTitle(title);
         return ResponseEntity.ok(ApiResponse.success(results));
     }
 }

@@ -20,7 +20,8 @@ public class CurationResultService {
     @Transactional(readOnly = true)
     public List<AdminCurationResultDto> getResultsByCurationId() {
         List<AdminCurationResultDto> results = repository.findResultsByCurationId();
-        results.sort(Comparator.comparing(AdminCurationResultDto::getTitle));
+        results.sort(Comparator.comparing(AdminCurationResultDto::getCreatedAt).reversed()
+                        .thenComparing(AdminCurationResultDto::getTitle));
         return results;
     }
 

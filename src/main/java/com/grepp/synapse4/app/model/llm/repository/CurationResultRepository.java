@@ -18,7 +18,8 @@ public interface CurationResultRepository extends JpaRepository<CurationResult, 
         c.title,
         r.name,
         r.address,
-        cr.active
+        cr.active,
+              cr.createdAt
       )
       FROM CurationResult cr
       JOIN cr.curation c
