@@ -1,5 +1,6 @@
 package com.grepp.synapse4.app.model.user;
 
+import com.grepp.synapse4.app.model.user.dto.AdminUserSearchDto;
 import com.grepp.synapse4.app.model.user.dto.request.EditInfoRequest;
 import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import com.grepp.synapse4.app.model.user.entity.User;
@@ -110,5 +111,10 @@ public class UserService {
         user.setActivated(false);
         user.setDeletedAt(LocalDateTime.now());
         userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AdminUserSearchDto> findByUserAccountContaining(String userAccount) {
+        return userRepository.findByUserAccountContaining(userAccount);
     }
 }
