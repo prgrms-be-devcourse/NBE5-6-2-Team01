@@ -1,5 +1,6 @@
 package com.grepp.synapse4.app.model.user;
 
+import com.grepp.synapse4.app.model.user.dto.FindIdResponseDto;
 import com.grepp.synapse4.app.model.user.dto.request.EditInfoRequest;
 import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import com.grepp.synapse4.app.model.user.entity.User;
@@ -113,8 +114,18 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<String> findUserIdByNicknameAndEmail(String nickname, String email) {
-        return userRepository.findByNicknameAndEmail(nickname, email)
-            .map(User::getUserAccount);
+    public Optional<FindIdResponseDto> findUserAccount(String name, String email) {
+        Optional<User> optionalUser = userRepository.findByNameAndEmail(name, email);
+
+        // User가 존재하면 아이디를 마스킹 처리하여 DTO로 변환
+        return optionalUser.map(user -> {
+            String maskedUserAccount = maskUserAccount(user.getUserAccount());
+            return new FindIdResponseDto(user.getName(), maskedUserAccount);
+        });
+    }
+
+    // 아이디 마스킹 로직
+    private String maskUserAccount(String userAccount) {
+        return userAccount.substring(0, 3) + "*".repeat(userAccount.length() - 3);
     }
 }

@@ -1,7 +1,9 @@
 package com.grepp.synapse4.app.controller.web.user;
 
-import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import com.grepp.synapse4.app.model.user.UserService;
+import com.grepp.synapse4.app.model.user.dto.FindIdRequestDto;
+import com.grepp.synapse4.app.model.user.dto.FindIdResponseDto;
+import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/user")
@@ -53,22 +54,24 @@ public class UserController {
     }
 
     @GetMapping("/find-id")
-    public String showFindIdForm() {
+    public String showFindIdForm(Model model) {
+        model.addAttribute("findIdRequestDto", new FindIdRequestDto());
         return "user/find-id";
     }
 
     @PostMapping("/find-id")
-    public String processFindId(@RequestParam String nickname,
-        @RequestParam String email,
-        Model model) {
-        Optional<String> userAccount = userService.findUserIdByNicknameAndEmail(nickname, email);
+    public String processFindId(@ModelAttribute FindIdRequestDto requestDto, Model model) {
 
-        if (userAccount.isPresent()) {
-            model.addAttribute("foundId", userAccount.get());
-        } else {
-            model.addAttribute("error", "일치하는 회원 정보를 찾을 수 없습니다.");
+        Optional<FindIdResponseDto> responseDto = userService.findUserAccount(
+            requestDto.getName(), requestDto.getEmail());
+
+        if (responseDto.isPresent()) {
+            model.addAttribute("result", responseDto.get());
+            return "user/find-id-result";
         }
-
-        return "user/find-id";
+        else {
+            model.addAttribute("error", "입력하신 정보와 일치하는 사용자가 없습니다.");
+            return "user/find-id";
+        }
     }
 }

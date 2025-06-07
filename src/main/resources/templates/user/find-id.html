@@ -11,16 +11,16 @@
   <div class="flex justify-center items-center min-h-screen bg-white">
     <div class="bg-gray-100 p-12 rounded-lg shadow-md w-full max-w-3xl">
       <div class="text-2xl font-bold text-center mb-8">아이디 찾기</div>
-      <form th:action="@{/user/find-id}" method="post" class="space-y-4">
+      <form th:action="@{/user/find-id}" method="post" th:object="${findIdRequestDto}">
         <div class="form-group">
-          <label for="nickname" class="font-semibold">닉네임</label>
-          <input type="text" id="nickname" name="nickname" class="w-full border border-gray-300 rounded px-3 py-2" required
-                 placeholder="닉네임을 입력해주세요"/>
+          <label th:for="name" class="font-semibold">이름</label>
+          <input type="text" th:field="*{name}" class="w-full border border-gray-300 rounded px-3 py-2" required
+                 placeholder="이름을 입력해주세요"/>
         </div>
 
         <div class="form-group">
-          <label for="email" class="font-semibold">이메일</label>
-          <input type="email" id="email" name="email" class="w-full border border-gray-300 rounded px-3 py-2" required
+          <label th:for="email" class="font-semibold">이메일</label>
+          <input type="email" th:field="*{email}" class="w-full border border-gray-300 rounded px-3 py-2" required
                  placeholder="이메일을 입력해주세요"/>
         </div>
 
@@ -30,7 +30,6 @@
           </button>
         </div>
 
-        <p th:if="${foundId}" class="text-green-700 text-center font-semibold mt-4" th:text="'아이디: ' + ${foundId}"></p>
         <p th:if="${error}" class="text-red-600 text-center mt-4" th:text="${error}"></p>
       </form>
     </div>
