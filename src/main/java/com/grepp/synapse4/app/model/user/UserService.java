@@ -102,6 +102,7 @@ public class UserService {
         return User.builder()
                 .userAccount(req.getUserAccount())
                 .password(passwordEncoder.encode(req.getPassword()))
+                .name(req.getName())
                 .email(req.getEmail())
                 .nickname(req.getNickname())
                 .build();
