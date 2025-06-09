@@ -25,7 +25,6 @@ import org.springframework.ui.Model;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 public class MeetingService {
 
   private final MeetingRepository meetingRepository;
