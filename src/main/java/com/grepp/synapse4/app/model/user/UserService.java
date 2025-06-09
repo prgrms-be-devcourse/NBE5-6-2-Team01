@@ -1,11 +1,12 @@
 package com.grepp.synapse4.app.model.user;
 
-import com.grepp.synapse4.app.model.user.dto.FindIdResponseDto;
+import com.grepp.synapse4.app.model.user.dto.response.FindIdResponseDto;
 import com.grepp.synapse4.app.model.user.dto.request.EditInfoRequest;
 import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
 import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.app.model.user.repository.UserRepository;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
+    private final MailService mailService;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -128,5 +130,25 @@ public class UserService {
     // 아이디 마스킹 로직
     private String maskUserAccount(String userAccount) {
         return userAccount.substring(0, 3) + "*".repeat(userAccount.length() - 3);
+    }
+
+    // 임시 비밀번호 전송
+    public void sendTemporaryPassword(String userAccount, String name, String email) {
+        Optional<User> userOptional = userRepository.findByUserAccountAndNameAndEmail(userAccount, name, email);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("입력하신 정보와 일치하는 사용자가 없습니다.");
+        }
+
+        User user = userOptional.get();
+
+        String tempPassword = generateTempPassword();
+        user.setPassword(passwordEncoder.encode(tempPassword));
+        userRepository.save(user);
+
+        mailService.sendTempPasswordEmail(user.getEmail(), tempPassword);
+    }
+
+    private String generateTempPassword() {
+        return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
     }
 }
