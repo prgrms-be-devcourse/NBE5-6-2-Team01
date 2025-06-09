@@ -4,6 +4,7 @@ import com.grepp.synapse4.app.model.restaurant.dto.create.CsvRestaurantDto;
 import com.grepp.synapse4.app.model.restaurant.entity.Restaurant;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
@@ -22,9 +23,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.util.ObjectUtils;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class FilReaderJobConfig {
 
     private final EntityManagerFactory entityManagerFactory;
@@ -70,7 +73,7 @@ public class FilReaderJobConfig {
 
         return new FlatFileItemReaderBuilder<CsvRestaurantDto>()
                 .name("basicFileItemReader")
-                .resource(new FileSystemResource("src/main/resources/restaurantdata/basicInfo_30.csv"))
+                .resource(new FileSystemResource("src/main/resources/restaurantdata/basicInfo_all.csv"))
                 .encoding("UTF-8")
                 .linesToSkip(1)
                 .lineTokenizer(new DelimitedLineTokenizer(){{           // 기본 구분자(,) : 구분자를 기준으로 FieldSet을 만들어줌
@@ -89,19 +92,28 @@ public class FilReaderJobConfig {
     @Bean
     public ItemProcessor<CsvRestaurantDto, Restaurant> basicFlatFileItemProcessor() {
 
-        System.out.println("🔹🔹🔹🔹🔹 step1 - processr");
 
+        return dto -> {
 
-        return dto -> Restaurant.builder()
-                .publicId(dto.getPublicId())
-                .name(dto.getName())
-                .branch(dto.getBranch())
-                .roadAddress(dto.getAddress())
-                .jibunAddress(dto.getJibunAddress())
-                .latitude(dto.getLatitude())
-                .longitude(dto.getLongitude())
-                .category(dto.getCategory())
-                .build();
+            // 데이터 유효성 검증
+            // 위경도 값 없을 시 skip
+            if (ObjectUtils.isEmpty(dto.getLatitude())
+                    || ObjectUtils.isEmpty(dto.getLongitude())) {
+                log.debug("위경도 값 부재 " + dto.getName());
+                return null;
+            }
+
+            return Restaurant.builder()
+                    .publicId(dto.getPublicId())
+                    .name(dto.getName())
+                    .branch(dto.getBranch())
+                    .roadAddress(dto.getAddress())
+                    .jibunAddress(dto.getJibunAddress())
+                    .latitude(dto.getLatitude())
+                    .longitude(dto.getLongitude())
+                    .category(dto.getCategory())
+                    .build();
+        };
     }
 
     // Step 1 - ItemWriter
@@ -110,15 +122,8 @@ public class FilReaderJobConfig {
     @Bean
     public JpaItemWriter<Restaurant> basicFlatFileItemWriter(EntityManagerFactory entityManagerFactory) {
 
-        System.out.println("라이터 생성 중?!!!");
-
         JpaItemWriter<Restaurant> writer = new JpaItemWriter<>();
-
-        System.out.println("저장 시도???");
-
         writer.setEntityManagerFactory(entityManagerFactory);
-
-        System.out.println("?????? 저장 완료?");
 
         return writer;
     }
