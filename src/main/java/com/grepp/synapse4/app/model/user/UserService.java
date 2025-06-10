@@ -1,10 +1,16 @@
 package com.grepp.synapse4.app.model.user;
 
-import com.grepp.synapse4.app.model.user.dto.response.FindIdResponseDto;
+import static com.grepp.synapse4.app.model.auth.code.Role.ROLE_ADMIN;
+import static com.grepp.synapse4.app.model.auth.code.Role.ROLE_USER;
+
+import com.grepp.synapse4.app.model.user.dto.AdminUserSearchDto;
 import com.grepp.synapse4.app.model.user.dto.request.EditInfoRequest;
 import com.grepp.synapse4.app.model.user.dto.request.UserSignUpRequest;
+import com.grepp.synapse4.app.model.user.dto.response.FindIdResponseDto;
 import com.grepp.synapse4.app.model.user.entity.User;
 import com.grepp.synapse4.app.model.user.repository.UserRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.grepp.synapse4.app.model.auth.code.Role.ROLE_ADMIN;
-import static com.grepp.synapse4.app.model.auth.code.Role.ROLE_USER;
 
 @Service
 @Transactional
@@ -150,5 +150,11 @@ public class UserService {
 
     private String generateTempPassword() {
         return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+    }
+
+    // 관리자 유저 검색기능
+    @Transactional(readOnly = true)
+    public List<AdminUserSearchDto> findByUserAccountContaining(String userAccount) {
+        return userRepository.findByUserAccountContaining(userAccount);
     }
 }
