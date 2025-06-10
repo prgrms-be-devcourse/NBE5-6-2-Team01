@@ -167,9 +167,4 @@ public class MeetingService {
   public List<AdminMeetingSearchDto> findAdminMeetingByTitle(String title) {
     return meetingRepository.findByTitleContaining(title);
   }
-
-  // 관리자페이지 모임검색
-  public List<AdminMeetingSearchDto> findAdminMeetingByTitle(String title) {
-    return meetingRepository.findByTitleContaining(title);
-  }
 }
