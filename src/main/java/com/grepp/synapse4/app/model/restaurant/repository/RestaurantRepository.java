@@ -24,4 +24,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
 
     List<Restaurant> findTop10ByActivatedIsTrueOrderByIdDesc();
+
+    Restaurant findByPublicId(String publicId);
+
+    boolean existsByPublicId(String publicId);
 }

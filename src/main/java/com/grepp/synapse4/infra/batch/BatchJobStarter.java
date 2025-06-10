@@ -1,6 +1,5 @@
-package com.grepp.synapse4.infra.init;
+package com.grepp.synapse4.infra.batch;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
@@ -22,7 +21,7 @@ public class BatchJobStarter implements CommandLineRunner {     //CommandLineRun
 
         JobParameters jobParameters = new JobParametersBuilder()
 //                .addLong("timestamp", System.currentTimeMillis())     //매번 실행되는
-                .addString("version", "1.2")            //같은 이름의 job은 실행되지 않는 현상을 이용한 것!
+                .addString("version", "1.8")            //같은 이름의 job은 실행되지 않는 현상을 이용한 것!
                 .toJobParameters();
 
         jobLauncher.run(fileReadWriteJob, jobParameters);

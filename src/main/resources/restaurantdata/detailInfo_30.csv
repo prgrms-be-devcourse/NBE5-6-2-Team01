@@ -1,4 +1,4 @@
-식당(ID),식당명,지점명,지역명,주차가능여부,와이파이제공여부,놀이방유무,다국어메뉴판제공여부,화장실정보내용,휴무일정보내용,영업시간내용,배달서비스유무,온라인예약정보내용,홈페이지(URL),인근랜드마크명,인근랜드마크위도,인근랜드마크경도,인근랜드마크와거리,스마트오더유무,대표메뉴명,식당상태,해시태그,면적정보내용
+publicId,name,branch,regionName,parkingRaw,wifiRaw,playroom,foreignMenu,toiletInfo,dayOff,rowBusinessTime,deliveryRaw,onlineReservationInfo,homePageURL,landmarkName,landmarkLatitude,landmarkLongitude,distanceFromLandmark,smartOrder,signatureMenus,status,hashtags,areaInfo
 10037,연타발,압구정본점,강남구,Y,Y,N,Y,Y,연중무휴,"평일 11:30~22:00, 토요일 11:30~22:00, 일요일 11:30~22:00",N,"레드테이블,네이버",http://yeontabal.modoo.at/,한순례한복침구,37.5265249,127.027692,83.81948,N,"양념왕갈비(주말/공휴일특선_3인분),연타발한우모듬,쿠보타만쥬,한우 꽃등심(150g) 2인분",NORMAL,"모범음식점,트립어드바이저,포장가능",
 10043,폴인팬케이크,강남점,강남구,N,Y,N,N,Y,,매일 12:00~22:00,N,레드테이블,http://www.intagram.com/paulin_pancake_,강남역푸드트럭존,37.4981603,127.0270168,73.44623,N,,NORMAL,,
 10065,연타발,선릉점,강남구,Y,Y,N,N,Y,,매일 11:00~22:00,N,네이버,http://yeontabal.modoo.at/,삼성(무역센터)역,37.5074134,127.058047,164.74928,N,"연타발갈비김치찌개(2인),특양구이(170g),티본선물포장(1kg)",NORMAL,포장가능,

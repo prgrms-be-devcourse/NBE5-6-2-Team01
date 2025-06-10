@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RestaurantDetail {
 
+    @Setter
     @Id
     private Long id;
 
